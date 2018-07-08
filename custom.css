@@ -34,6 +34,23 @@ body{
     font-family: 'Viga', sans-serif;
 }
 
+.logo_small{
+    display: inline-block;
+    color:#212121;
+    font-size: 50px;
+    margin:0 auto;
+    margin:20px 0px;
+    font-family: 'Viga', sans-serif;
+}
+
+.logo_small .invert{
+    color:white;
+}
+
+.login .container{
+    text-align: center;
+}
+
 .invert{
     color:#212121;
     background-color:#e89c23;
@@ -42,17 +59,67 @@ body{
     margin-left:8px;
 }
 
-
 .container {
     overflow: hidden;
     background-color:white;
-    width:1000px;
+    width:600px;
     margin:0 auto;
     border-radius: 10px;
     box-shadow:1px 1px 7px rgba(0,0,0,.5);
     padding:5px;
     text-align: center;
     margin-bottom:50px;
+}
+
+.meme_container{
+    background-color:red;
+    margin:0 auto;
+    margin-top:10px;
+    margin-bottom:10px;
+    width:500px;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size:17px;
+    text-align: left;
+    box-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+}
+
+.meme_title, .meme_details{
+    display:block;
+    padding:5px 10px;
+}
+
+.meme_title{
+    background-color:#212121;
+    color:white;
+}
+
+.meme_details{
+    color:#212121;
+    background-color:#e89c23;
+}
+
+img{
+    width: 100%;
+    height:auto;
+}
+
+.meme_stats{
+    background-color: #212121;
+    color:white;
+    padding:5px 10px;
+    display: flex;
+}
+
+.meme_stats span{
+    display: flex;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.meme_stats i:hover{
+    opacity: .5;
 }
 
 .ui.container{
@@ -65,8 +132,21 @@ body{
 }
 
 .wrapper{
-    width:1000px;
+    width:600px;
     margin:0 auto;
     margin-top:200px;
     text-align: center;
+}
+
+.login .form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.ui.left.icon.input, .ui.submit.button{
+    width:300px;
+    margin:0 auto;
+    margin-top:10px;
 }
