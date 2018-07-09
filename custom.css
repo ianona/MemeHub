@@ -171,6 +171,12 @@ img{
     color: dimgrey;
 }
 
+#tags, #title{
+    height:25px;
+    font-size:12pt;
+    font-family: 'Viga', sans-serif;
+}
+
 .header{
     text-decoration: underline;
     font-size: 25px;
