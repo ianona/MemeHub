@@ -35,6 +35,7 @@
                 });
             });
         </script>
+        
         <link rel="stylesheet" type="text/css" href="custom.css">
     </head>
     <body>
@@ -128,12 +129,66 @@
         <!-------SHARE MEME MODAL------>
         <div class="ui small modal share_modal">
             <i class="close icon"></i>
-            <div class="header">Share meme</div>
+            <div class="header">SHARE A MEME</div>
             <div class="content">
-                LUCIA PUT UR STUFF HERE
+                
+                <span>Upload a meme: </span>
+                <input type="file" accept="image/png,image/jpg,image/tiff" id="real-file" hidden="hidden"/>
+                <button type="button" id="custom-button" class="share-buttons">CHOOSE A FILE</button>
+                <span id="custom-text">No meme chosen yet</span>
+                
+                <script type="text/javascript">
+                    const realFileBtn = document.getElementById("real-file");
+                    const customBtn = document.getElementById("custom-button");
+                    const customTxt = document.getElementById("custom-text");
+                    
+                    customBtn.addEventListener("click", function() {
+                        realFileBtn.click();
+                    });
+                    
+                    realFileBtn.addEventListener("change", function() {
+                        if(realFileBtn.value){ //if a file is chosen
+                            customTxt.innerHTML = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+                        }
+                        else
+                            customTxt.innerHTML = "No meme chosen yet";
+                    });
+                </script>
+                
+                <div>
+                    <br>
+                    Give your meme a dank title: 
+                    <span> 
+                        <input type="text" id="title"/>
+                    </span>
+                </div>
+                
+                <div>
+                    <br>
+                    Tags: 
+                    <span> 
+                        <input type="text" id="tags"/>
+                    </span>
+                </div>
+                
+                <div>
+                    <br>
+                    Privacy: 
+                    <span> 
+                        <button type="button" id="private-button" class="share-buttons">PRIVATE</button>
+                        <button type="button" id="public-button" class="share-buttons">PUBLIC</button>
+                    </span>
+                </div>
+                
+                <div>
+                    <br>
+                    <button type="button" id="share-button" class="share-buttons">UPLOAD</button>
+                </div>
             </div>
             
         </div>
+        
+        
         
         <!-------VIEW MEME MODAL------>
         <div class="ui small modal view_modal">

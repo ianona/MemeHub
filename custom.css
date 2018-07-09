@@ -150,3 +150,36 @@ img{
     margin:0 auto;
     margin-top:10px;
 }
+
+.share-buttons{
+    padding: 10px;
+    color: white;
+    font-size: 12px;
+    background-color: darkorange;
+    border: 1px solid #212121;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.share-buttons:hover{
+    background-color: #e37a0e;
+}
+
+#custom-text{
+    margin-left: 10px;
+    font-family: 'Viga', sans-serif;
+    color: dimgrey;
+}
+
+.header{
+    text-decoration: underline;
+    font-size: 25px;
+    font-family: 'Viga', sans-serif;
+    color: #212121;
+    
+}
+.content{
+    margin-left: 10px;
+    font-family: 'Viga', sans-serif;
+    color: #212121;
+}
