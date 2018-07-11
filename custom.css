@@ -1,9 +1,16 @@
+/* IAN */
+
 body{
     background-color:#efefef;
 }
 
-.ui.button{
+.ui.button.orange, .ui.button.submit{
     background-color:#e89c23;
+    color:white;
+}
+
+.ui.button.orange:hover, .ui.button.submit:hover{
+    background-color:#ce891c;
     color:white;
 }
 
@@ -28,7 +35,7 @@ body{
 .logo{
     color:white;
     font-size: 70px;
-    display:inline-block;
+    display:block;
     margin:0 auto;
     margin-bottom:150px;
     font-family: 'Viga', sans-serif;
@@ -59,16 +66,30 @@ body{
     margin-left:8px;
 }
 
+.wrapper{
+    width:950px;
+    margin:0 auto;
+    margin-top:200px;
+    text-align: center;
+}
+
+.left-rail{
+    width:300px;
+    margin-right:50px;
+    float:left;
+    position: relative;
+}
+
 .container {
     overflow: hidden;
     background-color:white;
     width:600px;
-    margin:0 auto;
     border-radius: 10px;
     box-shadow:1px 1px 7px rgba(0,0,0,.5);
     padding:5px;
     text-align: center;
     margin-bottom:50px;
+    float: right;
 }
 
 .meme_container{
@@ -131,13 +152,6 @@ img{
     background-color:#212121;
 }
 
-.wrapper{
-    width:600px;
-    margin:0 auto;
-    margin-top:200px;
-    text-align: center;
-}
-
 .login .form{
     display: flex;
     flex-direction: column;
@@ -151,41 +165,124 @@ img{
     margin-top:10px;
 }
 
+#newUser_container{
+    text-align: center;
+    margin:10px;
+}
+
+.hyperlink{
+    color:#e89c23;
+    text-decoration: underline;
+}
+
+.hyperlink:hover{
+    cursor:pointer;
+}
+
+#signup_form{
+    display: none;
+}
+
+.red.message{
+    display:none;
+    width: 200px;
+    margin:0 auto;
+    font-size: 12px;
+}
+
+.logout_buttons{
+    margin-top:20px;
+}
+
+.avatar{
+    height:30px;
+    width:30px;
+    border-radius: 50%;
+    margin:7px 20px 7px 7px;;
+}
+
+.small_container{
+    width:300px;
+    margin-bottom: 20px;
+    z-index: -1;
+}
+
+.small_container .header{
+    padding:10px 5px;
+    font-size:20px;
+    border-bottom: 1px solid #c6c6c6;
+}
+
+.small_container .content{
+    padding:5px;
+    font-size:13px;
+}
+
+.small_container .meme_count, .small_container .joined, .small_container .username{
+    color:#e89c23;
+}
+
+.display_photo{
+    height:180px;
+    width:180px;
+    border-radius: 50%;
+    margin:0 auto;
+    border:3px solid white;
+    box-shadow: 2px 2px 2px rgba(0,0,0,0.5);
+    margin-bottom: -12px;
+    z-index:10;
+    position: relative;
+}
+
+#searchTag{
+    width:100%;
+}
+
+textarea {
+  resize: none;
+}
+
+.field .container{
+    width:100%;
+    box-shadow: none;
+    border:1px solid #d4d4d4;
+    overflow-x: scroll;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.ui.avatar{
+    float:left;
+    margin:4px 15px;
+    height:35px;
+    width:35px;
+    border-radius: 50%;
+}
+
+.ui.avatar.selected{
+    border:5px solid #e89c23 ;
+    border-collapse: collapse;
+}
+
+/* LUCIA */
+
 .share-buttons{
     padding: 10px;
     color: white;
     font-size: 12px;
-    background-color: darkorange;
-    border: 1px solid #212121;
+    background-color: #e89c23;
+    /*border: 1px solid #212121;*/
     border-radius: 5px;
     cursor: pointer;
 }
 
 .share-buttons:hover{
-    background-color: #e37a0e;
+    background-color: #db9422;
 }
 
 #custom-text{
     margin-left: 10px;
     font-family: 'Viga', sans-serif;
     color: dimgrey;
-}
-
-#tags, #title{
-    height:25px;
-    font-size:12pt;
-    font-family: 'Viga', sans-serif;
-}
-
-.header{
-    text-decoration: underline;
-    font-size: 25px;
-    font-family: 'Viga', sans-serif;
-    color: #212121;
-    
-}
-.content{
-    margin-left: 10px;
-    font-family: 'Viga', sans-serif;
-    color: #212121;
 }
