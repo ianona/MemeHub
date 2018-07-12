@@ -225,7 +225,7 @@
             function insertMemesUser(user){
                 for (let i=0;i<memes.length;i++){
                     if (memes[i].owner == user && memes[i].status == "public")
-                        insertMeme(memes[i], true)
+                        insertMeme(memes[i], false)
                 }
                 
                 let more = document.createElement("div")
@@ -483,7 +483,7 @@
             <div class="upper_profile">
                 <div class="display_photo"><img src="avatar/girl-1.png"></div>
                 <div class="small_container container">
-                    <div class="header">admin</div>
+                    <div class="header">admin2</div>
                     <div class="content">welcome to my profile</div>
                 </div>
             </div>
