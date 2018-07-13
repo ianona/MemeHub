@@ -336,17 +336,19 @@
                         input = $("#search_tags").val();
                             
                         input = input.split(' ').join('-');
-                        input = "#" + input;
                         
                         $("#search_tags").val("");
                         
                         for (i=0; i<=tagArray.length; i++) {
+                            console.log("Element[" + i + "]" + tagArray[i]);
+                            console.log("Current Array Length: " + tagArray.length);
                             if(tagArray[i] == input) {
                                 repeat = 1;
                             }
                         }
                         
-                        tagArray.push(input);
+                        console.log("REPEAT: " + repeat);
+                        
                         console.log(tagArray.length); //checking array length
                             
                         var inputTag = document.createElement('a');
@@ -358,11 +360,15 @@
                         $(deleteTag).attr('data-tag-name', input);
                         $(deleteTag).click(x);
                             
-                        $(inputTag).text(input);
+                        $(inputTag).text("#" + input);
                         $(inputTag).append(deleteTag);
                             
                         if (input!="" && repeat!=1)
+                        {
+                            tagArray.push(input);
+                            console.log(input);
                             $("#textarea2").append(inputTag);
+                        }
                     }
                 })
                 

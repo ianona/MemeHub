@@ -361,7 +361,6 @@
                         input = $("#search_tags").val();
                             
                         input = input.split(' ').join('-');
-                        input = "#" + input;
                         
                         $("#search_tags").val("");
                         
@@ -383,11 +382,15 @@
                         $(deleteTag).attr('data-tag-name', input);
                         $(deleteTag).click(x);
                             
-                        $(inputTag).text(input);
+                        $(inputTag).text("#" + input);
                         $(inputTag).append(deleteTag);
                             
                         if (input!="" && repeat!=1)
+                        {
+                            tagArray.push(input);
                             $("#textarea2").append(inputTag);
+                        }
+                            
                     }
                 })
                 

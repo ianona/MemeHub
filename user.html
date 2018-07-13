@@ -307,7 +307,7 @@
                 
                 $(".meme_container img").click(viewMeme)
                 
-                 $('#tags').keypress(function(event){
+                $('#tags').keypress(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
                     var repeat = 0;
                     
@@ -317,7 +317,6 @@
                         input = $("#tags").val();
                             
                         input = input.split(' ').join('-');
-                        input = "#" + input;
                         
                         $("#tags").val("");
                         
@@ -327,7 +326,6 @@
                             }
                         }
                         
-                        tagArray.push(input);
                         console.log(tagArray.length); //checking array length
                             
                         var inputTag = document.createElement('a');
@@ -339,11 +337,14 @@
                         $(deleteTag).attr('data-tag-name', input);
                         $(deleteTag).click(x);
                             
-                        $(inputTag).text(input);
+                        $(inputTag).text("#" + input);
                         $(inputTag).append(deleteTag);
                             
                         if (input!="" && repeat!=1)
+                        {
+                            tagArray.push(input);
                             $("#textarea").append(inputTag);
+                        }
                     }
                 })
                 
@@ -358,7 +359,6 @@
                         input = $("#tags2").val();
                             
                         input = input.split(' ').join('-');
-                        input = "@" + input;
                         
                         console.log(input);
                         $("#tags2").val("");
@@ -369,7 +369,6 @@
                             }
                         }
                         
-                        tagArray2.push(input);
                         console.log(tagArray2.length); //checking array length
                             
                         var inputTag = document.createElement('a');
@@ -381,11 +380,14 @@
                         $(deleteTag).attr('data-tag-name', input);
                         $(deleteTag).click(x);
                             
-                        $(inputTag).text(input);
+                        $(inputTag).text("@" + input);
                         $(inputTag).append(deleteTag);
                             
                         if (input!="" && repeat!=1)
+                        {
+                            tagArray2.push(input);
                             $("#textarea3").append(inputTag);
+                        }
                            
                     }
                 })
@@ -403,7 +405,6 @@
                         input = $("#tags3").val();
                             
                         input = input.split(' ').join('-');
-                        input = "@" + input;
                         
                         console.log(input);
                         $("#tags3").val("");
@@ -414,7 +415,6 @@
                             }
                         }
                         
-                        tagArray3.push(input);
                         var inputTag = document.createElement('a');
                         var deleteTag = document.createElement('i');
                         inputTag.className = "ui label";
@@ -424,10 +424,13 @@
                         $(deleteTag).attr('data-tag-name', input);
                         $(deleteTag).click(x);
                         
-                        $(inputTag).text(input);
+                        $(inputTag).text("@" + input);
                         $(inputTag).append(deleteTag);
                         if (input!="" && repeat!=1)
+                        {
+                            tagArray3.push(input);
                             $("#textarea4").append(inputTag);
+                        }
                     }
                 })
                 
@@ -440,7 +443,6 @@
                         input = $("#search_tags").val();
                             
                         input = input.split(' ').join('-');
-                        input = "#" + input;
                         
                         console.log(input);
                         $("#search_tags").val("");
@@ -451,7 +453,6 @@
                             }
                         }
                         
-                        tagSearchAr.push(input);
                         console.log(tagArray.length); //checking array length
                             
                         var inputTag = document.createElement('a');
@@ -463,13 +464,17 @@
                         $(deleteTag).attr('data-tag-name', input);
                         $(deleteTag).click(x);
                         
-                        $(inputTag).text(input);
+                        $(inputTag).text("#" + input);
                         $(inputTag).append(deleteTag);
                         
 
                         
                         if (input!="" && repeat!=1)
+                        {
+                            tagSearchAr.push(input);
                             $("#textarea2").append(inputTag);
+                        }
+                            
                     }
                 })
                 
