@@ -324,6 +324,10 @@ a.ui.label:nth-child(2n) {
     color: #cb1919;
 }
 
+.trash:hover, .edit:hover, .check.circle:hover{
+    cursor:pointer;
+}
+
 .view_profile1 .content, .view_profile2 .content{
     text-align: center;
 }
