@@ -309,29 +309,28 @@
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#tags").val();
-                            input = $("#tags").val();
+                        input = $("#tags").val();
                             
-                            input = input.split(' ').join('-');
+                        input = input.split(' ').join('-');
                         
-                            console.log(input);
-                            $("#tags").val("");
-                            tagArray.push(input);
-                            console.log(tagArray.length); //checking array length
+                        $("#tags").val("");
+                        tagArray.push(input);
+                        console.log(tagArray.length); //checking array length
                             
-                            var inputTag = document.createElement('a');
-                            var deleteTag = document.createElement('i');
-                            inputTag.className = "ui label";
-                            deleteTag.className = "delete icon";
+                        var inputTag = document.createElement('a');
+                        var deleteTag = document.createElement('i');
+                        inputTag.className = "ui label";
+                        deleteTag.className = "delete icon";
                             
-                            $(inputTag).attr('id', input); //setting tag name to id 
-                            $(deleteTag).attr('data-tag-name', input);
-                            $(deleteTag).click(x);
+                        $(inputTag).attr('id', input); //setting tag name to id 
+                        $(deleteTag).attr('data-tag-name', input);
+                        $(deleteTag).click(x);
                             
-                            $(inputTag).text(input);
-                            $(inputTag).append(deleteTag);
+                        $(inputTag).text(input);
+                        $(inputTag).append(deleteTag);
                             
+                        if (input!="")
                             $("#textarea").append(inputTag);
-                           
                     }
                 })
                 
@@ -340,27 +339,28 @@
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#tags2").val();
-                            input = $("#tags2").val();
+                        input = $("#tags2").val();
                             
-                            input = input.split(' ').join('-');
+                        input = input.split(' ').join('-');
                         
-                            console.log(input);
-                            $("#tags2").val("");
-                            tagArray.push(input);
-                            console.log(tagArray.length); //checking array length
+                        console.log(input);
+                        $("#tags2").val("");
+                        tagArray.push(input);
+                        console.log(tagArray.length); //checking array length
                             
-                            var inputTag = document.createElement('a');
-                            var deleteTag = document.createElement('i');
-                            inputTag.className = "ui label";
-                            deleteTag.className = "delete icon";
+                        var inputTag = document.createElement('a');
+                        var deleteTag = document.createElement('i');
+                        inputTag.className = "ui label";
+                        deleteTag.className = "delete icon";
                             
-                            $(inputTag).attr('id', input); //setting tag name to id 
-                            $(deleteTag).attr('data-tag-name', input);
-                            $(deleteTag).click(x);
+                        $(inputTag).attr('id', input); //setting tag name to id 
+                        $(deleteTag).attr('data-tag-name', input);
+                        $(deleteTag).click(x);
                             
-                            $(inputTag).text(input);
-                            $(inputTag).append(deleteTag);
+                        $(inputTag).text(input);
+                        $(inputTag).append(deleteTag);
                             
+                        if (input!="")
                             $("#textarea3").append(inputTag);
                            
                     }
@@ -372,25 +372,25 @@
                         event.preventDefault();
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#tags3").val();
-                            input = $("#tags3").val();
+                        input = $("#tags3").val();
                             
-                            input = input.split(' ').join('-');
+                        input = input.split(' ').join('-');
                         
-                            console.log(input);
-                            $("#tags3").val("");
+                        console.log(input);
+                        $("#tags3").val("");
                             
-                            var inputTag = document.createElement('a');
-                            var deleteTag = document.createElement('i');
-                            inputTag.className = "ui label";
-                            deleteTag.className = "delete icon";
+                        var inputTag = document.createElement('a');
+                        var deleteTag = document.createElement('i');
+                        inputTag.className = "ui label";
+                        deleteTag.className = "delete icon";
                             
-                            $(inputTag).attr('id', input); //setting tag name to id 
-                            $(deleteTag).attr('data-tag-name', input);
-                            $(deleteTag).click(x);
-                            
-                            $(inputTag).text(input);
-                            $(inputTag).append(deleteTag);
-                            
+                        $(inputTag).attr('id', input); //setting tag name to id 
+                        $(deleteTag).attr('data-tag-name', input);
+                        $(deleteTag).click(x);
+                        
+                        $(inputTag).text(input);
+                        $(inputTag).append(deleteTag);
+                        if (input!="")
                             $("#textarea4").append(inputTag);
                     }
                 })
@@ -400,27 +400,28 @@
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#search_tags").val();
-                            input = $("#search_tags").val();
+                        input = $("#search_tags").val();
                             
-                            input = input.split(' ').join('-');
+                        input = input.split(' ').join('-');
                         
-                            console.log(input);
-                            $("#search_tags").val("");
-                            tagArray.push(input);
-                            console.log(tagArray.length); //checking array length
+                        console.log(input);
+                        $("#search_tags").val("");
+                        tagArray.push(input);
+                        console.log(tagArray.length); //checking array length
                             
-                            var inputTag = document.createElement('a');
-                            var deleteTag = document.createElement('i');
-                            inputTag.className = "ui label";
-                            deleteTag.className = "delete icon";
+                        var inputTag = document.createElement('a');
+                        var deleteTag = document.createElement('i');
+                        inputTag.className = "ui label";
+                        deleteTag.className = "delete icon";
                             
-                            $(inputTag).attr('id', input); //setting tag name to id 
-                            $(deleteTag).attr('data-tag-name', input);
-                            $(deleteTag).click(x);
-                            
-                            $(inputTag).text(input);
-                            $(inputTag).append(deleteTag);
-                            
+                        $(inputTag).attr('id', input); //setting tag name to id 
+                        $(deleteTag).attr('data-tag-name', input);
+                        $(deleteTag).click(x);
+                        
+                        $(inputTag).text(input);
+                        $(inputTag).append(deleteTag);
+                        
+                        if (input!="")
                             $("#textarea2").append(inputTag);
                     }
                 })

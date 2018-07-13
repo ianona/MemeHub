@@ -331,27 +331,27 @@
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#search_tags").val();
-                            input = $("#search_tags").val();
+                        input = $("#search_tags").val();
                             
-                            input = input.split(' ').join('-');
+                        input = input.split(' ').join('-');
                         
-                            console.log(input);
-                            $("#search_tags").val("");
-                            tagArray.push(input);
-                            console.log(tagArray.length); //checking array length
+                        $("#search_tags").val("");
+                        tagArray.push(input);
+                        console.log(tagArray.length); //checking array length
                             
-                            var inputTag = document.createElement('a');
-                            var deleteTag = document.createElement('i');
-                            inputTag.className = "ui label";
-                            deleteTag.className = "delete icon";
+                        var inputTag = document.createElement('a');
+                        var deleteTag = document.createElement('i');
+                        inputTag.className = "ui label";
+                        deleteTag.className = "delete icon";
                             
-                            $(inputTag).attr('id', input); //setting tag name to id 
-                            $(deleteTag).attr('data-tag-name', input);
-                            $(deleteTag).click(x);
+                        $(inputTag).attr('id', input); //setting tag name to id 
+                        $(deleteTag).attr('data-tag-name', input);
+                        $(deleteTag).click(x);
                             
-                            $(inputTag).text(input);
-                            $(inputTag).append(deleteTag);
+                        $(inputTag).text(input);
+                        $(inputTag).append(deleteTag);
                             
+                        if (input!="")
                             $("#textarea2").append(inputTag);
                     }
                 })
