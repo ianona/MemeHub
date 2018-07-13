@@ -312,7 +312,7 @@
                     var tagname = taglist[i];
                     var newtag = document.createElement("div");
                     newtag.className = "ui label";
-                    $(newtag).text(tagname)
+                    $(newtag).text("#"+tagname)
                     $("div.ui.longer.modal.view_modal div.tag_holder").append(newtag);
                 }
                     
@@ -581,12 +581,12 @@
                 <div class="small_container container">
                     <div class="header">Popular Tags</div>
                     <div class="content" id="popular_tags">
-                        <a class="ui label">dank</a>
-                        <a class="ui label">spicy</a>
-                        <a class="ui label">pinoy</a>
-                        <a class="ui label">loss</a>
-                        <a class="ui label">computer-science</a>
-                        <a class="ui label">cool</a>
+                        <a class="ui label">#dank</a>
+                        <a class="ui label">#spicy</a>
+                        <a class="ui label">#pinoy</a>
+                        <a class="ui label">#loss</a>
+                        <a class="ui label">#computer-science</a>
+                        <a class="ui label">#cool</a>
                     </div>
                 </div>
                 <div class="small_container container" id="search_container">
