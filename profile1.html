@@ -108,6 +108,9 @@
             }
             
             var tagArray = [];
+            var tagArray2 = [];
+            var tagArray3 = [];
+            var tagSearchAr = [];
             
             function x(){
                 console.log("YOU CLICKED DELETE!!!" + $(this).attr('data-tag-name'));
@@ -303,14 +306,24 @@
                 
                 $('#tags').keypress(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
+                    var repeat = 0;
+                    
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#tags").val();
                         input = $("#tags").val();
                             
                         input = input.split(' ').join('-');
+                        input = "#" + input;
                         
                         $("#tags").val("");
+                        
+                        for (i=0; i<=tagArray.length; i++) {
+                            if(tagArray[i] == input) {
+                                repeat = 1;
+                            }
+                        }
+                        
                         tagArray.push(input);
                         console.log(tagArray.length); //checking array length
                             
@@ -326,24 +339,35 @@
                         $(inputTag).text(input);
                         $(inputTag).append(deleteTag);
                             
-                        if (input!="")
+                        if (input!="" && repeat!=1)
                             $("#textarea").append(inputTag);
                     }
                 })
                 
+                //shared users
                 $('#tags2').keypress(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
+                    var repeat = 0;
+                    
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#tags2").val();
                         input = $("#tags2").val();
                             
                         input = input.split(' ').join('-');
+                        input = "@" + input;
                         
                         console.log(input);
                         $("#tags2").val("");
-                        tagArray.push(input);
-                        console.log(tagArray.length); //checking array length
+
+                        for (i=0; i<=tagArray2.length; i++) {
+                            if(tagArray2[i] == input) {
+                                repeat = 1;
+                            }
+                        }
+                        
+                        tagArray2.push(input);
+                        console.log(tagArray2.length); //checking array length
                             
                         var inputTag = document.createElement('a');
                         var deleteTag = document.createElement('i');
@@ -357,14 +381,18 @@
                         $(inputTag).text(input);
                         $(inputTag).append(deleteTag);
                             
-                        if (input!="")
+                        if (input!="" && repeat!=1)
                             $("#textarea3").append(inputTag);
                            
                     }
                 })
                 
+                
+                //users to share meme with in share meme modal
                 $('#tags3').keypress(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
+                    var repeat = 0;
+                    
                     if(keycode == '13'){
                         event.preventDefault();
                         console.log("YOU PRESSED ENTER!");
@@ -372,10 +400,18 @@
                         input = $("#tags3").val();
                             
                         input = input.split(' ').join('-');
+                        input = "@" + input;
                         
                         console.log(input);
                         $("#tags3").val("");
-                            
+                        
+                        for (i=0; i<=tagArray3.length; i++) {
+                            if(tagArray3[i] == input) {
+                                repeat = 1;
+                            }
+                        }
+                        
+                        tagArray3.push(input);
                         var inputTag = document.createElement('a');
                         var deleteTag = document.createElement('i');
                         inputTag.className = "ui label";
@@ -387,23 +423,32 @@
                         
                         $(inputTag).text(input);
                         $(inputTag).append(deleteTag);
-                        if (input!="")
+                        if (input!="" && repeat!=1)
                             $("#textarea4").append(inputTag);
                     }
                 })
                 
                 $('#search_tags').keypress(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
+                    var repeat = 0;
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
                         var input = $("#search_tags").val();
                         input = $("#search_tags").val();
                             
                         input = input.split(' ').join('-');
+                        input = "#" + input;
                         
                         console.log(input);
                         $("#search_tags").val("");
-                        tagArray.push(input);
+                        
+                        for (i=0; i<=tagSearchAr.length; i++) {
+                            if(tagSearchAr[i] == input) {
+                                repeat = 1;
+                            }
+                        }
+                        
+                        tagSearchAr.push(input);
                         console.log(tagArray.length); //checking array length
                             
                         var inputTag = document.createElement('a');
@@ -418,7 +463,9 @@
                         $(inputTag).text(input);
                         $(inputTag).append(deleteTag);
                         
-                        if (input!="")
+
+                        
+                        if (input!="" && repeat!=1)
                             $("#textarea2").append(inputTag);
                     }
                 })
@@ -573,7 +620,7 @@
                     
                     <div class="field">
                         <label>Shared users</label>
-                        <input type="text" id="tags2" placeholder="admin2, admin"/>
+                        <input type="text" id="tags2" placeholder="@admin2, @admin"/>
                         <div id="textarea3"></div>
                     </div>
                     
@@ -604,7 +651,7 @@
                 <form class="ui form">
                     <div class="field">
                         <label>Add users to share this meme with</label>
-                        <input type="text" id="tags3" placeholder="admin2, admin"/>
+                        <input type="text" id="tags3" placeholder="@admin2, @admin"/>
                         <div id="textarea4"></div>
                        
                     </div>

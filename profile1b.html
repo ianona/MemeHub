@@ -354,15 +354,23 @@
                 
                 $('#search_tags').keypress(function(event){
                     var keycode = (event.keyCode ? event.keyCode : event.which);
+                    var repeat = 0;
                     if(keycode == '13'){
                         console.log("YOU PRESSED ENTER!");
-                        var input = $("#search_tags").val();
+                        var input = $("#search_tags").val(); 
                         input = $("#search_tags").val();
                             
                         input = input.split(' ').join('-');
+                        input = "#" + input;
                         
-                        console.log(input);
                         $("#search_tags").val("");
+                        
+                        for (i=0; i<=tagArray.length; i++) {
+                            if(tagArray[i] == input) {
+                                repeat = 1;
+                            }
+                        }
+                        
                         tagArray.push(input);
                         console.log(tagArray.length); //checking array length
                             
@@ -377,8 +385,8 @@
                             
                         $(inputTag).text(input);
                         $(inputTag).append(deleteTag);
-
-                        if (input!="")
+                            
+                        if (input!="" && repeat!=1)
                             $("#textarea2").append(inputTag);
                     }
                 })
