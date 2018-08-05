@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>MemeHub</title>
+        <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="custom.css">
+        <link href="https://fonts.googleapis.com/css?family=Viga" rel="stylesheet">
+        <script src="jquery-3.3.1.js"></script>
+        <script src="semantic/semantic.min.js"></script>
+        <script src="modals.js"></script>
+        <script src="authentication.js"></script>
+        <script>      
+            $(document).ready(function(){
+                {{#if signup_message}}
+                $(".registerSuccess").modal('show')
+                {{/if}}
+            })
+        </script>
+    </head>
+    <body>
+        {{> header}}
+        <!-------PARALLAX EFFECT FOR THE BACKGROUND------>
+        <div class="parallax"></div>
+
+        <!-------WRAPPER FOR LOGO AND MEME DASHBOARD------>
+        <div class="wrapper">
+            <div class="scroller_anchor2"></div>
+            <div class="logo">Meme<span class="invert">Hub</span></div>
+
+            <div class="scroller_anchor"></div>
+
+            <div class="left-rail">
+                {{#if user}}
+                <div class="display_photo"><img src="{{user.avatar}}"></div>
+                <div class="small_container container">
+                    <div class="header">Welcome, <span class="username">{{user.username}}</span>!<i class="edit icon" style="float:none;padding:10px;" id="edit_username"></i></div>
+                    <div class="content">Joined <span class="joined">2 years ago</span>. Uploaded <span class="meme_count">10</span> memes.</div>
+                </div>
+                {{else}}
+                <div class="small_container container">
+                    <div class="header">Not logged in</div>
+                    <div class="content">Log-in <span class="hyperlink" id="login2">here</span> to upload and react to memes.</div>
+                </div>
+                {{/if}}
+
+                <div class="small_container container">
+                    <div class="header">Popular Tags</div>
+                    <div class="content" id="popular_tags">
+                        <a class="ui label">#dank</a>
+                        <a class="ui label">#spicy</a>
+                        <a class="ui label">#pinoy</a>
+                        <a class="ui label">#loss</a>
+                        <a class="ui label">#computer-science</a>
+                        <a class="ui label">#cool</a>
+                    </div>
+                </div>
+                <div class="small_container container" id="search_container">
+                    <div class="header">Search by tags</div>
+                    <div class="content">
+                        <div class="ui left input" id="searchTag">
+                            <input type="text" id="search_tags">
+                            <div id="textarea2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container right">
+                {{#each memes}}
+                <div class="meme_container"><span class="meme_title">{{title}}</span>
+                    <span class="meme_details">by {{user}}</span>
+                    <div class="meme">
+                        <img src="{{img_path}}">
+                    </div>
+                    <div class="meme_stats">
+                        <span>{{upvotes}}<i class="chevron circle up icon"></i></span>
+                        <span>{{downvotes}}<i class="chevron circle down icon"></i></span>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+        {{> modals}}
+    </body>
+</html>

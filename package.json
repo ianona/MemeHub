@@ -1,0 +1,29 @@
+{
+  "name": "memehub",
+  "version": "1.0.0",
+  "description": "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01//EN\" \"http://www.w3.org/TR/html4/strict.dtd\"> <html> <head>   <title>README</title>     <link href=\"https://fonts.googleapis.com/css?family=PT+Sans\" rel=\"stylesheet\">   <style type=\"text/css\">   body{   font-family: 'PT Sans', sans-serif;       background-color: #e09939;       margin:0;       height:100%;   }   .wrapper{       height:100%;       width:900px;       margin:0 auto;   \t background-color: white;       padding: 10px 30px;   }   </style> </head> <body> \t<div class=\"wrapper\"> \t\t<h1>WEBAPDE MP Phase 1</h1> \t\t<h3>ONA | PINEDA | GAMUTAN</h3> \t\t<h3>Site Map</h3>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianona/memehub.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianona/memehub.github.io/issues"
+  },
+  "homepage": "https://github.com/ianona/memehub.github.io#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "fs": "0.0.1-security",
+    "hbs": "^4.0.1",
+    "mongoose": "^5.2.6",
+    "path": "^0.12.7"
+  }
+}

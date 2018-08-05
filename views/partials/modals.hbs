@@ -1,0 +1,223 @@
+<!-------SIGN-UP MODAL------>
+<div class="ui small modal login">
+    <i class="close icon"></i>
+    <!------LOGIN FORM------->
+    <div class="signup header">Login</div>
+    <div class="content">
+        <center>
+            <div class="logo_small">Meme<span class="invert">Hub</span></div>
+        </center>
+        <form action="login" class="ui large form" id="login_form" method="post">
+            <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input id="username" type="text" name="username" placeholder="username">
+            </div>
+
+            <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input id="password" type="password" name="password" placeholder="password">
+            </div>
+            <span id="newUser_container">
+                New to MemeHub? Sign up <span class="hyperlink" id="goto_signup">here</span>.
+            </span>
+            <div class="ui message red">
+                <div class="header">
+                    Invalid credentials
+                    {{result}}
+                </div>
+            </div>
+            <div class="ui submit button" id="login_btn">Login</div>
+        </form>
+        <form action="login_success" id="hidden_login_form" method="get" class="hidden">
+                <input id="hidden_username" type="hidden" name="hidden_username">
+                <input id="hidden_password" type="hidden" name="hidden_password">
+        </form>
+        <!------SIGNUP FORM------->
+        <form action="signup" class="ui form" id="signup_form" method="post">
+            <div class="three fields">
+                <div class="required field">
+                    <label>Email</label>
+                    <input type="text" name="signup_email" placeholder="john_smith@memehub.com">
+                </div>
+                <div class="required field">
+                    <label>Username</label>
+                    <input type="text" name="signup_username" placeholder="johnsmith96">
+                </div>
+                <div class="required field">
+                    <label>Password</label>
+                    <input type="password" name="signup_password" placeholder="******">
+                </div>
+            </div>         
+
+            <div class="required field">
+                <label>Date of Birth</label>
+                <div class="three fields">
+                    <div class="field">
+                        <select class="ui fluid search dropdown" name="signup_month">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <input type="number" name="signup_day" min="1" max="31" placeholder="Day">
+                    </div>
+                    <div class="field">
+                        <input type="text" name="signup_year" maxlength="4" placeholder="Year">
+                    </div>
+                </div>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label>Bio</label>
+                    <textarea name="signup_bio" rows="3"></textarea>
+                </div>
+                <div class="field">
+                    <label>Choose avatar</label>
+                    <div class="container">
+                        <img class="ui avatar" src="avatar/man-2.png">
+                        <img class="ui avatar" src="avatar/boy-1.png">
+                        <img class="ui avatar" src="avatar/boy.png">
+                        <img class="ui avatar" src="avatar/girl-1.png">
+                        <img class="ui avatar" src="avatar/girl.png">
+                        <img class="ui avatar" src="avatar/man-1.png">
+                        <input type="hidden" class="hidden" name="hidden_avatar" id="hidden_avatar" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="ui checkbox">
+                    <input type="checkbox" tabindex="0" name="signup_check">
+                    <label>I agree to the Terms and Conditions</label>
+                </div>
+            </div>
+            <span id="newUser_container">Already have an account? Login <span class="hyperlink" id="goto_login">here</span>.</span>
+            <div class="ui submit disabled button" id="signup_btn">Register</div>
+        </form>  
+    </div>
+</div>
+
+<!-------VIEW MEME MODAL------>
+<div class="ui longer modal view_modal">
+    <i class="close icon"></i>
+    <div class="header">View meme</div>
+    <div class="content">
+        <div id="view_meme_title"></div>
+        <div id="view_meme_info"></div>
+        <center>
+            <div class ="view_meme"><img src="" id="view_meme_img"></div>
+        </center>
+        <div class="tag_holder"></div>
+    </div>
+</div>
+
+<!-------REGISTERED SUCCESFULLY MODAL------->
+<div class="ui modal registerSuccess">
+    <i class="close icon"></i>
+    <div class="header">
+        {{#if error}}
+        Error
+        {{else}}
+        Success
+        {{/if}}
+        <i class="check circle"></i></div>
+    <div class="content">
+        {{signup_message}}{{error}}
+    </div>
+</div>
+
+<!-------UPLOAD SUCCESS MODAL------>
+<div class="ui tiny modal uploadSuccess_modal">
+    <i class="close icon"></i>
+    <div class="header">Upload meme</div>
+    <div class="scrolling content">
+        You have successfully uploaded a meme!
+    </div>
+</div>
+
+<!-------UPLOAD MEME MODAL------>
+<div class="ui tiny modal upload_modal">
+    <i class="close icon"></i>
+    <div class="header">Upload meme</div>
+    <div class="scrolling content">
+        <form class="ui form">
+            <div class="field">
+                <label>Upload a meme</label>
+                <input type="file" accept="image/png,image/jpg,image/tiff" id="real-file" hidden="hidden"/>
+                <div class="ui button orange" id="custom-button">Choose a file</div>
+                <span id="custom-text">No meme chosen yet</span>
+                <script type="text/javascript">
+                    const realFileBtn = document.getElementById("real-file");
+                    const customBtn = document.getElementById("custom-button");
+                    const customTxt = document.getElementById("custom-text");
+
+                    customBtn.addEventListener("click", function() {
+                        realFileBtn.click();
+                    });
+
+                    realFileBtn.addEventListener("change", function() {
+                        if(realFileBtn.value){ //if a file is chosen
+                            customTxt.innerHTML = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+                        } else
+                            customTxt.innerHTML = "No meme chosen yet";
+                    });
+                </script>
+            </div>
+
+            <div class="field">
+                <label>Give your meme a dank title</label>
+                <input type="text" id="title" placeholder="Dank Meme"/>
+            </div>
+
+            <div class="field">
+                <label>Tags</label>
+                <input type="text" id="tags" placeholder="#doge, #Drake"/>
+                <div id="textarea"></div>
+            </div>
+
+            <div class="field">
+                <label>Shared users</label>
+                <input type="text" id="tags2" placeholder="@admin2, @admin"/>
+                <div id="textarea3"></div>
+            </div>
+
+            <div class="field">
+                <label>Privacy</label>
+                <div class="ui button orange" id="private-button">Private</div>
+                <div class="ui button orange" id="public-button">Public</div>
+            </div>
+            <div class="ui inverted button orange" id="share-button">Upload</div>
+        </form>
+    </div>
+</div>
+
+<!-------LOGOUT MODAL------>
+<div class="ui tiny modal logout">
+    <i class="close icon"></i>
+    <div class="signup header">Logout</div>
+    <div class="content">
+        <center>
+            <div class="logo_small">Meme<span class="invert">Hub</span></div>
+            <div class="logout_prompt">
+                Are you sure you want to logout?
+                <div class="logout_buttons">
+                    <a href="logout">
+                        <div class="ui orange button" id="logout_btn">Logout</div>
+                    </a>
+
+                    <div class="ui button" id="cancel">Cancel</div>
+                </div>
+            </div>
+        </center>
+    </div>
+</div>
