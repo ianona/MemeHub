@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const multer = require("multer");
 
 var MemeSchema = mongoose.Schema({
     title:{
@@ -42,6 +43,15 @@ var MemeSchema = mongoose.Schema({
 
 var Meme = mongoose.model("meme",MemeSchema)
 
+var Storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, "./views/static/uploads");
+    },
+    filename: function (req, file, callback) {
+        callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);
+    }
+})
+
 module.exports = {
-    Meme
+    Meme, Storage
 }

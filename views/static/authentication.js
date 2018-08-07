@@ -32,22 +32,23 @@ function signup(){
 function login(){
     let username = $("#username").val()
     let password = $("#password").val()
-    $.post(
-        'login',
-        { username, password },
-        function(data, status){
-            if(status === 'success'){
-                if (data.result === 'error') {
-                    $(".red.message").css("display","flex")
-                }
-                else{
-                    $("input#hidden_username").val(username)
-                    $("input#hidden_password").val(password)
-                    $("form#hidden_login_form").submit()
-                }
+    $.ajax({
+        url:'login',
+        method: 'POST',
+        data: { username, password },
+        success: function(res){
+            if (res.result === 'error') {
+                $(".red.message").css("display","flex")
             }
+            else {
+                $("input#hidden_username").val(username)
+                $("input#hidden_password").val(password)
+                $("form#hidden_login_form").submit()
+            }
+        }
 
-        })
+    })
+
 }
 
 function checkFields() {

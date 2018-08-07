@@ -28,9 +28,7 @@ $(document).ready(function(){
         $(".upload_modal").modal('show');
     });
 
-    $("#share-button").click(function(){
-        $(".uploadSuccess_modal").modal('show');
-    });
+    $("#share-button").click(uploadMeme);
 
     $("span.username.clickable").click(function(){
         $(".view_profile1").modal('show');
@@ -54,7 +52,41 @@ $(document).ready(function(){
 
     $(".ui.avatar").click(changeAvatarChoice)
     $(".meme_container img").click(viewMeme)
+
+    $('.chosen').append($('<option>', {
+        value: 1,
+        text: 'My option'
+    }));
+
+    $(".chosen").chosen({
+        disable_search:true,
+        max_shown_results:0
+    });
+
+    $('.chosen').append($('<option>', {
+        value: 2,
+        text: 'PORK'
+    }));
+
+    $(".chosen").trigger("chosen:updated");
+
+    let container = $(".chosen").data("chosen").container
+    container.bind("keypress", updateSearch);
+
 })
+
+$(".chosen").chosen().keydown(function(e) {
+    if (e.which == 13) {
+        console.log("ENTER")
+    }
+});
+
+function updateSearch(event){
+    console.log("HELLO")
+    if (event.which == '13') {
+        console.log("ENTER")
+    }
+}
 
 function changeAvatarChoice() {
     $(".ui.avatar").removeClass("selected")
@@ -80,27 +112,56 @@ function showLogin(){
 
 function viewMeme(){
     let id = $(this).attr('data-id')
-    var source = memes[id].link;
-    var title = memes[id].title;
-    var content ="by " + memes[id].owner
+    $.post(
+        'viewMeme',
+        {id},
+        function(data,status){
+            if (status === 'success') {
+                console.log(data.meme.img_path)
+                $("#view_meme_title").text(data.meme.title);
+                $("#view_meme_info").text("by " + data.meme.user);
+                $("div.ui.longer.modal.view_modal div.view_meme img").attr("src", data.meme.img_path)
 
-    $("#view_meme_title").text(title);
-    $("div.ui.longer.modal.view_modal div.view_meme img").attr("src",source)
+                $("div.ui.longer.modal.view_modal div.tag_holder").html('');
+                for (i = 0; i < data.meme.tags.length; i++) { 
+                    var tagname = data.meme.tags[i];
+                    var newtag = document.createElement("div");
+                    newtag.className = "ui label";
+                    $(newtag).text("#"+tagname)
+                    $("div.ui.longer.modal.view_modal div.tag_holder").append(newtag);
+                }
 
-    /*
-    if (memes[id].owner=="admin") {
-        $("#view_meme_info").click(function(){
-            window.location.replace("profile1b.html");
+                $(".view_modal").modal('setting', 'transition', 'horizontal flip')
+                $(".view_modal").modal('show');
+            }
         })
-    } else {
-        $("#view_meme_info").click(function(){
-            window.location.replace("profile2b.html");
-        })
-    }
-
-    $("#view_meme_info").text(content);
-
-    $(".view_modal").modal('setting', 'transition', 'horizontal flip')
-    $(".view_modal").modal('show');
-    */
 }
+
+/*
+
+$(document).ready(function () {
+    var options = {
+        beforeSubmit: showRequest,  // pre-submit callback
+        success: showResponse  // post-submit callback
+    };
+
+    // bind to the form's submit event
+    $('#frmUploader').submit(function () {
+        $(this).ajaxSubmit(options);
+        // always return false to prevent standard browser submit and page navigation
+        return false;
+    });
+});
+
+// pre-submit callback
+function showRequest(formData, jqForm, options) {
+    alert('Uploading is starting.');
+    return true;
+}
+
+// post-submit callback
+function showResponse(responseText, statusText, xhr, $form) {
+    alert('status: ' + statusText + '\n\nresponseText: \n' + responseText );
+}
+*/
+

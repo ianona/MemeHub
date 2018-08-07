@@ -2,16 +2,25 @@
     <head>
         <title>MemeHub</title>
         <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="chosen_v1.8.7/chosen.css">
         <link rel="stylesheet" type="text/css" href="custom.css">
         <link href="https://fonts.googleapis.com/css?family=Viga" rel="stylesheet">
         <script src="jquery-3.3.1.js"></script>
+        <script src="jquery.form.min.js"></script>
         <script src="semantic/semantic.min.js"></script>
+        <script src="chosen_v1.8.7/chosen.jquery.js"></script>
         <script src="modals.js"></script>
         <script src="authentication.js"></script>
+        <script src="upload.js"></script>
+        <script src="sticky.js"></script>
         <script>      
             $(document).ready(function(){
                 {{#if signup_message}}
                 $(".registerSuccess").modal('show')
+                {{/if}}
+                
+                {{#if upload_message}}
+                $(".uploadSuccess_modal").modal('show')
                 {{/if}}
             })
         </script>
@@ -32,7 +41,8 @@
                 {{#if user}}
                 <div class="display_photo"><img src="{{user.avatar}}"></div>
                 <div class="small_container container">
-                    <div class="header">Welcome, <span class="username">{{user.username}}</span>!<i class="edit icon" style="float:none;padding:10px;" id="edit_username"></i></div>
+                    <div class="header">Welcome, <span class="username">{{user.username}}</span>!
+                    </div>
                     <div class="content">Joined <span class="joined">2 years ago</span>. Uploaded <span class="meme_count">10</span> memes.</div>
                 </div>
                 {{else}}
@@ -56,10 +66,15 @@
                 <div class="small_container container" id="search_container">
                     <div class="header">Search by tags</div>
                     <div class="content">
-                        <div class="ui left input" id="searchTag">
-                            <input type="text" id="search_tags">
-                            <div id="textarea2"></div>
-                        </div>
+                        <!-----
+<div class="ui left input" id="searchTag">
+<input type="text" id="search_tags">
+<div id="textarea2"></div>
+</div>
+----->
+                        <select class="chosen" multiple="true" style="width:100%;">
+                            <option selected>Polar Bear</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -69,7 +84,7 @@
                 <div class="meme_container"><span class="meme_title">{{title}}</span>
                     <span class="meme_details">by {{user}}</span>
                     <div class="meme">
-                        <img src="{{img_path}}">
+                        <img src="{{img_path}}" data-id={{_id}}>
                     </div>
                     <div class="meme_stats">
                         <span>{{upvotes}}<i class="chevron circle up icon"></i></span>

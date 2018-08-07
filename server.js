@@ -5,9 +5,13 @@ const session= require("express-session")
 const cookieparser = require("cookie-parser")
 const hbs = require("hbs")
 const mongoose = require("mongoose")
-const fs = require("fs");
+const fs = require("fs")
+const multer = require("multer")
 const User = require("./models/user.js").User
+const Storage = require("./models/meme.js").Storage
+const upload = multer({ storage: Storage }).array("imgUploader")
 const Meme = require("./models/meme.js").Meme
+const Tag = require("./models/tag.js").Tag
 
 /*                  SETUP               */
 var app = express()
@@ -77,6 +81,16 @@ app.post("/login", urlencoder, (req,res)=>{
     })
 })
 
+app.post("/viewMeme", urlencoder, (req,res)=>{
+    Meme.findOne({
+        _id:req.body.id
+    }).then((meme)=>{
+        res.send({
+            meme
+        })
+    })
+})
+
 app.get("/login_success", urlencoder, (req,res)=>{
     let user = req.session.user
     Meme.find({
@@ -101,7 +115,8 @@ app.post("/signup", urlencoder, (req,res)=>{
     console.log(username+"/"+password)
     let u = new User({
         username, password, email, birthday, avatar, bio,
-        join_date:new Date()
+        join_date:new Date(),
+        memes:[]
     })
 
     u.save().then(()=>{
@@ -112,6 +127,37 @@ app.post("/signup", urlencoder, (req,res)=>{
         res.render("index.hbs", {
             signup_message:"Sorry, something went wrong: ",
             error:err
+        })
+    })
+})
+
+app.post("/upload", urlencoder, (req, res) => {
+    upload(req, res, function (err) {
+        let user = req.session.user
+        if (err) {
+            Meme.find({
+                privacy:"public"
+            }).then((memes)=>{
+                res.render("index.hbs", {
+                    upload_message:"Sorry, something went wrong with the upload: ",
+                    error:err,
+                    user,
+                    memes
+                })
+            }, ()=>{
+                res.render("error.hbs")
+            })
+        }
+        Meme.find({
+            privacy:"public"
+        }).then((memes)=>{
+            res.render("index.hbs", {
+                upload_message:"You have successfully uploaded a meme!",
+                user,
+                memes
+            })
+        }, ()=>{
+            res.render("error.hbs")
         })
     })
 })
@@ -131,7 +177,7 @@ app.listen(3000, ()=>{
     let m = new Meme({
         title:"sample meme",
         user:"admin",
-        img_path:"memes/first.png",
+        img_path:"uploads/first.png",
         tags:["first","meme"],
         shared_users:["admin2"],
         privacy:"public",
@@ -146,4 +192,4 @@ app.listen(3000, ()=>{
     })
 
     console.log("Now listening on port 3000...")
-});
+})

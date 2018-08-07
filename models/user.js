@@ -33,6 +33,10 @@ var UserSchema = mongoose.Schema({
     join_date:{
         type:Date,
         required:true
+    },
+    memes:{
+        type:Array,
+        required:true
     }
 })
 

@@ -141,7 +141,7 @@
     <i class="close icon"></i>
     <div class="header">Upload meme</div>
     <div class="scrolling content">
-        You have successfully uploaded a meme!
+        {{upload_message}}{{error}}
     </div>
 </div>
 
@@ -150,10 +150,10 @@
     <i class="close icon"></i>
     <div class="header">Upload meme</div>
     <div class="scrolling content">
-        <form class="ui form">
+        <form class="ui form" id="frmUploader" enctype="multipart/form-data" action="upload" method="post">
             <div class="field">
                 <label>Upload a meme</label>
-                <input type="file" accept="image/png,image/jpg,image/tiff" id="real-file" hidden="hidden"/>
+                <input type="file" accept="image/png,image/jpg,image/tiff" id="real-file" name="imgUploader" hidden="hidden" multiple>
                 <div class="ui button orange" id="custom-button">Choose a file</div>
                 <span id="custom-text">No meme chosen yet</span>
                 <script type="text/javascript">
@@ -187,11 +187,12 @@
 
             <div class="field">
                 <label>Shared users</label>
-                <input type="text" id="tags2" placeholder="@admin2, @admin"/>
+                <input type="text" id="tags_sharedUsers" placeholder="@admin2, @admin"/>
                 <div id="textarea3"></div>
             </div>
 
             <div class="field">
+                <input id="status" name="status" type="text" hidden="hidden">
                 <label>Privacy</label>
                 <div class="ui button orange" id="private-button">Private</div>
                 <div class="ui button orange" id="public-button">Public</div>
