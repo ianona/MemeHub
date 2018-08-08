@@ -13,6 +13,21 @@ $(document).ready(function(){
     $("input[name=signup_check]").click(checkFields)
 })
 
+function showSignup(){
+    $("#login_form").css("display","none")
+    $(".logo_small").css("display","none")
+    $("#signup_form").css("display","flex")
+    $(".header.signup").text("Sign-up")
+}
+
+function showLogin(){
+    $("#signup_form").css("display","none")
+    $("#login_form").css("display","flex")
+    $(".logo_small").css("display","inline-block")
+    $(".header.signup").text("Login")  
+    $(".red.message").css("display","none")
+}
+
 function isValidEmail(email){
     return true
 }
@@ -41,14 +56,13 @@ function login(){
                 $(".red.message").css("display","flex")
             }
             else {
-                $("input#hidden_username").val(username)
-                $("input#hidden_password").val(password)
+                //$("input#hidden_username").val(username)
+                //$("input#hidden_password").val(password)
                 $("form#hidden_login_form").submit()
             }
         }
 
     })
-
 }
 
 function checkFields() {

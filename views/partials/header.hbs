@@ -1,9 +1,9 @@
 {{#if user}}
 
 <div class="ui small menu borderless sticky">
-    <a class="active item">Top</a>
-    <a class="item">Hot</a>
-    <a class="item">Trending</a>
+    <a class="active item" data-type="top">Top</a>
+    <a class="item" data-type="hot">Hot</a>
+    <a class="item" data-type="trending">Trending</a>
 
     <div class="right menu">
         <div class="logo_tiny">Meme<span class="invert">Hub</span></div>
@@ -22,9 +22,9 @@
 {{else}}
 
 <div class="ui small menu borderless sticky">
-    <a class="active item">Top</a>
-    <a class="item">Hot</a>
-    <a class="item">Trending</a>
+    <a class="active item" data-type="top">Top</a>
+    <a class="item" data-type="hot">Hot</a>
+    <a class="item" data-type="trending">Trending</a>
 
     <div class="right menu">
         <div class="logo_tiny">Meme<span class="invert">Hub</span></div>
@@ -37,3 +37,7 @@
 </div>
 
 {{/if}}
+
+<form id="sort" action="sort" method="post">
+    <input type="text" hidden="hidden" name="sort_type" value="">
+</form>

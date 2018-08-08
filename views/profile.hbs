@@ -19,7 +19,7 @@
                 {{#if signup_message}}
                 $(".registerSuccess").modal('show')
                 {{/if}}
-
+                
                 {{#if upload_message}}
                 $(".uploadSuccess_modal").modal('show')
                 {{/if}}
@@ -30,34 +30,20 @@
         {{> header}}
         <!-------PARALLAX EFFECT FOR THE BACKGROUND------>
         <div class="parallax"></div>
-
+        
         <!-------WRAPPER FOR LOGO AND MEME DASHBOARD------>
         <div class="wrapper">
             <div class="scroller_anchor2"></div>
-            <div class="logo">Meme<span class="invert">Hub</span></div>
-
+            <div class="upper_profile">
+                <div class="display_photo"><img src="{{profile.avatar}}"></div>
+                <div class="small_container container">
+                    <div class="header username" data-name={{user.username}}>{{profile.username}}</div>
+                    <div class="content">{{profile.bio}}</div>
+                </div>
+            </div>
+            
             <div class="scroller_anchor"></div>
-
             <div class="left-rail">
-                {{#if user}}
-                <div class="display_photo"><img src="{{user.avatar}}"></div>
-                <div class="small_container container">
-                    <div class="header">Welcome, <span data-name="{{user.username}}" class="username">{{user.username}}</span>!
-                    </div>
-                    <div class="content">Joined <span class="joined">{{user.join_date}}</span>. Uploaded <span class="meme_count">{{user.memes.length}}</span> memes.</div>
-                </div>
-                {{else}}
-                <div class="small_container container">
-                    <div class="header">Not logged in</div>
-                    <div class="content">Log-in <span class="hyperlink" id="login2">here</span> to upload and react to memes.</div>
-                </div>
-                {{/if}}
-
-                <div class="small_container container">
-                    <div class="header">Popular Tags</div>
-                    <div class="content" id="popular_tags">
-                    </div>
-                </div>
                 <div class="small_container container" id="search_container">
                     <div class="header">Search by tags</div>
                     <div class="content">
@@ -66,9 +52,10 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="container right">
-                {{#each memes}}
+                {{#each profile.memes}}
+                {{#if (isPublic privacy)}}
                 <div class="meme_container">
                     <span class="meme_title">
                         {{title}}
@@ -91,6 +78,7 @@
                         {{/if}}
                     </div>
                 </div>
+                {{/if}}
                 {{/each}}
             </div>
         </div>

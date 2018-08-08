@@ -2,6 +2,7 @@
 
 body{
     background-color:#efefef;
+    height:100%;
 }
 
 .ui.button.orange, .ui.button.submit{
@@ -315,7 +316,7 @@ a.ui.label:nth-child(2n) {
     margin-left:10px;
 }
 
-.trash, .edit{
+.trash, .edit, .save{
     float:right;
     padding-right:30px;
 }
@@ -324,7 +325,7 @@ a.ui.label:nth-child(2n) {
     color: #cb1919;
 }
 
-.trash:hover, .edit:hover, .check.circle:hover{
+.trash:hover, .edit:hover, .check.circle:hover, .save:hover{
     cursor:pointer;
 }
 
@@ -360,7 +361,7 @@ a.ui.label:nth-child(2n) {
     color: #212121;
 }
 
-#textarea, #textarea3, #textarea4 {
+#textarea, #textarea3, #textarea4, .chosen_users{
     -moz-appearance: textfield-multiline;
     -webkit-appearance: textarea;
     margin-top:7px;
@@ -424,4 +425,13 @@ a.ui.label:nth-child(2n) {
 
 .hidden{
     display:none;
+    visibility: hidden;
+}
+
+#search_container, #tags_container{
+    overflow:visible;
+}
+
+.view_profile .content{
+    text-align:center;
 }
