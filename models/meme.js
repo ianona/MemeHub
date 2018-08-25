@@ -41,11 +41,11 @@ var MemeSchema = mongoose.Schema({
     }
 })
 
-var Meme = mongoose.model("meme",MemeSchema)
+var Meme = mongoose.model("meme", MemeSchema)
 
 var Storage = multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, "./views/static/uploads");
+        callback(null, "./uploads");
     },
     filename: function (req, file, callback) {
         //callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname);

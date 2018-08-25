@@ -1,11 +1,160 @@
-const Meme = require("./models/meme.js").Meme
+const Tag = require("../models/tag.js").Tag
+const User = require("../models/user.js").User
+const Meme = require("../models/meme.js").Meme
 
 // FIND ALL PUBLIC MEMES
-function getAllPublicMemes(req, res) {
+module.exports.getAllPublicMemes = function(){
+    return new Promise(function(resolve,reject){
+        Meme.find({
+            privacy:"public"
+        }).then((memes)=>{
+            resolve(memes)
+        }, (err)=>{
+            reject(err)
+        })
+    })
+}
+
+// FIND ALL PUBLIC MEMES AND PRIVATE MEMES THAT BELONG TO THE USER
+module.exports.getAllMemesByUser = function(user){
+    return new Promise(function(resolve,reject){
+        Meme.find({
+            $or:[
+                {
+                    privacy:"public"
+                },
+                {
+                    privacy:"private",
+                    user:user.username
+                }
+            ]
+        }).then((memes)=>{
+            resolve(memes)
+        }, (err)=>{
+            reject(err)
+        })
+    })
+}
+
+// FIND MEME BASED ON ID AND RETURN MEME
+module.exports.findMeme = function(id){
+    return new Promise(function(resolve,reject){
+        Meme.findOne({
+            _id:id
+        }).then((meme)=>{
+            resolve(meme)
+        }, (err)=>{
+            reject(err)
+        })
+    })
+}
+
+// ADD NEW MEME
+module.exports.addNewMeme = function(m){
+    return new Promise(function(resolve,reject){
+        m.save().then((newMeme)=>{
+            resolve(newMeme)
+        }, (err)=>{
+            reject(err)
+        })
+    })
+}
+
+// SEARCH FOR MEME BASED ON TAGS
+module.exports.search = function(tags, username){
+    return new Promise(function(resolve,reject){
+        if (tags){
+            Meme.find({
+                $or:[
+                    {
+                        tags: {
+                            $all: tags
+                        },
+                        privacy:"public"
+                    },
+                    {
+                        tags: {
+                            $all: tags
+                        },
+                        privacy:"private",
+                        user:username
+                    }
+                ]
+            }).then((memes)=>{
+                resolve(memes)
+            })
+        } else {
+            Meme.find({
+                $or:[
+                    {
+                        privacy:"public"
+                    },
+                    {
+                        privacy:"private",
+                        user:username
+                    }
+                ]
+            }).then((memes)=>{
+                resolve(memes)
+            })
+        }
+    })
+}
+
+// DELETE MEME BASED ON ID
+module.exports.deleteMeme = function(id){
+    return new Promise(function(resolve,reject){
+        Meme.deleteOne({
+            _id:id
+        }).then((result)=>{
+            resolve(result)
+        })
+    })
+}
+
+// UPDATE SHARED USERS FOR PARTICULAR MEME BASED ON ID
+module.exports.updateSharedUsers = function(id, shared_users){
+    return new Promise(function(resolve,reject){
+        Meme.findOneAndUpdate({
+            _id:id
+        }, {
+            shared_users:shared_users
+        }).then(()=>{
+            resolve()
+        },(err)=>{
+            reject(err)
+        })
+    })
+}
+
+// EDIT MEME TITLE AND TAGS
+module.exports.editMeme = function(id, newTitle, newTags){
+    return new Promise(function(resolve,reject){
+        Meme.findOneAndUpdate({
+            _id:id
+        }, {
+            title:newTitle,
+            tags:newTags
+        }, {
+            returnNewDocument:true
+        }).then((updatedDoc)=>{
+            resolve(updatedDoc)
+        }, (err)=>{
+            reject(err)
+        })
+    })
+}
+
+/*
+// FIND ALL PUBLIC MEMES BY COUNT
+function getAllPublicMemesByCount(req, res) {
+    var n = req.session.meme_count
     Meme.find({
         privacy:"public"
     }).then((memes)=>{
         let user = req.session.user
+
+        memes = memes.slice(0,n)
         if (user){
             res.redirect("/login_success")
         } else {
@@ -18,8 +167,9 @@ function getAllPublicMemes(req, res) {
     })
 }
 
-// FIND ALL PUBLIC MEMES AND PRIVATE MEMES THAT BELONG TO THE USER
-function getAllMemesByUser(req,res) {
+// FIND ALL PUBLIC MEMES AND PRIVATE MEMES THAT BELONG TO THE USER WITH COUNT
+function getAllMemesByUserByCount(req,res) {
+    var n = req.session.meme_count
     let user = req.session.user
     Meme.find({
         $or:[
@@ -32,6 +182,7 @@ function getAllMemesByUser(req,res) {
             }
         ]
     }).then((memes)=>{
+        memes = memes.slice(0,n)
         let user = req.session.user
         if (user){
             res.redirect("/login_success")
@@ -40,50 +191,6 @@ function getAllMemesByUser(req,res) {
                 memes
             })
         }
-    })
-}
-
-// ADD NEW MEME
-function addNewMeme(req,res){
-    var m = new Meme({
-        title:req.body.title,
-        user:req.session.user.username,
-        img_path:"uploads/"+req.body.hiddenFile,
-        tags:req.body.tags.split(' ').filter(Boolean),
-        shared_users:req.body.shared_users,
-        privacy:req.body.status,
-        upvotes:0,
-        downvotes:0
-    })
-
-    m.save().then(()=>{
-        console.log("[Meme] SAVE SUCCESS!")
-    }, (err)=>{
-        console.log("[Meme] SAVE FAILURE: " + err)
-    })
-
-    res.redirect("/")
-}
-
-// DELETE MEME
-function deleteMeme(req,res){
-    var id = req.body.id
-    Meme.deleteOne({
-        _id:id
-    }).then((result)=>{
-        console.log("[Meme] Delete Success!")
-        res.redirect('/')
-    })
-}
-
-// FIND MEME BASED ON ID AND RETURN MEME
-function findMeme(req,res){
-    Meme.findOne({
-        _id:req.body.id
-    }).then((meme)=>{
-        res.send({
-            meme
-        })
     })
 }
 
@@ -105,76 +212,35 @@ function updateVotes(req,res){
     })
 }
 
-// UPDATE SHARED USERS FOR PARTICULAR MEME BASED ON ID
-function updateSharedUsers(req,res){
-    Meme.findOneAndUpdate({
-        _id:req.body.id
-    }, {
-        shared_users:req.body.su
-    }).then(()=>{
-        res.send({
-            msg:"success"
-        })
+// SEARCH FOR MEME BASED ON SHARED USERS
+function findMeme(req,res){
+    var n = req.session.meme_count
+    let user = req.session.user
+    Meme.find({
+        $or:[
+            {
+                privacy:"public"
+            },
+            {
+                privacy:"private",
+                user:user.username
+            },
+            {
+                privacy:"private",
+                $elemMatch: { shared_users: user.username } 
+            }
+        ]
+    }).then((memes)=>{
+        let user = req.session.user
+        memes.sort(curSort)
+        memes = memes.slice(0,n)
+        if (user){
+            res.redirect("/login_success")
+        } else {
+            res.render("index.hbs",{
+                memes
+            })
+        }
     })
 }
-
-// SEARCH FOR MEME BASED ON TAGS
-function search(req,res){
-    if (req.query.tags){
-        var uname = ""
-        if (req.session.user)
-            uname = req.session.user.username
-        Meme.find({
-            $or:[
-                {
-                    tags: {
-                        $all: req.query.tags
-                    },
-                    privacy:"public"
-                },
-                {
-                    tags: {
-                        $all: req.query.tags
-                    },
-                    privacy:"private",
-                    user:uname
-                }
-            ]
-        }).then((memes)=>{
-            console.log("[Meme] Search success!")
-            res.send({memes})
-        })
-    } else {
-        var uname = ""
-        if (req.session.user)
-            uname = req.session.user.username
-        Meme.find({
-            $or:[
-                {
-                    privacy:"public"
-                },
-                {
-                    privacy:"private",
-                    user:uname
-                }
-            ]
-        }).then((memes)=>{
-            console.log("[Meme] Search success!")
-            res.send({memes})
-        })
-    }
-}
-
-// EDIT MEME TITLE AND TAGS
-function editMeme(req,res){
-    Meme.findOneAndUpdate({
-        _id:req.query.id
-    }, {
-        title:req.query.new_title,
-        tags:req.query.new_tags
-    }).then(()=>{
-        res.send({
-            msg:"success"
-        })
-    })
-}
+*/

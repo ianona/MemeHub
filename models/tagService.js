@@ -1,45 +1,96 @@
-const Tag = require("./models/tag.js").Tag
+const Tag = require("../models/tag.js").Tag
+const User = require("../models/user.js").User
+const Meme = require("../models/meme.js").Meme
+
+// GET ALL TAGS
+module.exports.getAllTags = function () {
+    return new Promise(function (resolve, reject) {
+        Tag.find({
+
+        }).then((tags) => {
+            resolve(tags)
+        })
+    })
+}
+
+// GET TOP 5 POPULAR TAGS BASED ON NUMBER OF POSTS
+module.exports.getPopularTags = function () {
+    return new Promise(function (resolve, reject) {
+        Tag.find({
+
+        }).then((tags) => {
+            var i
+            var top5 = []
+
+            //sorting tags array by  number of posts per tag in descending order
+            tags.sort((a, b) => parseFloat(b.posts.length) - parseFloat(a.posts.length))
+
+            for (i = 0; i < 5; i++) {
+                top5.push(tags[i])
+            }
+
+            resolve(top5)
+        })
+    })
+}
+
+function contains(list, element){
+    for(i=0;i<list.length;i++){
+        if(list[i]._id == element._id)
+            return i
+    }
+    return -1
+}
 
 // ADD TAGS FROM AN ARRAY OF TAGS
-function addTags(req, res){
-    var m = new Meme({
-        title:req.body.title,
-        user:req.session.user.username,
-        img_path:"uploads/"+req.body.hiddenFile,
-        tags:req.body.tags.split(' ').filter(Boolean),
-        shared_users:req.body.shared_users,
-        privacy:req.body.status,
-        upvotes:0,
-        downvotes:0
-    })
-    
-    let tags = req.body.tags.split(' ').filter(Boolean)
-
-    for (i=0;i<tags.length;i++){
-        let name = tags[i]
+module.exports.addTag = function (name, m) {
+    return new Promise(function (resolve, reject) {
         Tag.findOne({
             name: name
-        }).then((tag)=>{
-            if(tag){
-                console.log("Tag already exists")
-            } else{
+        }).then((tag) => {
+            if (tag) {
+                if (contains(tags.posts, m) != -1){
+                    tags.posts.splice(contains(tags.posts, m),1)
+                }
+                tag.posts.push(m)
+                tag.save().then((newdoc) => {
+                    resolve(newdoc)
+                }, (err) => {
+                    reject(err)
+                })
+            } else {
                 var t = new Tag({
-                    name:name,
-                    posts:[m]
-                })    
+                    name: name,
+                    posts: [m]
+                })
 
-                t.save().then((newdoc)=>{
-                    console.log("successfully added tag")
-                }, (err)=>{
-                    console.log("something went wrong: "+err)
+                t.save().then((newdoc) => {
+                    resolve(newdoc)
+                }, (err) => {
+                    reject(err)
                 })
             }
         })
-    }
-
-    res.redirect("/")
+    })
 }
 
+// FIND TAG BASED ON MEME ID AND DELETE MEME WITHIN TAG
+module.exports.deleteTagMeme = function (meme) {
+    return new Promise(function (resolve, reject) {
+        Tag.find({
+            //posts.id: id
+        }).then((tags) => {
+            for (i = tags.length - 1; i > -1; i--) {
+                tags[i].posts.splice(tags[i].posts.indexOf(meme), 1);
+                tags[i].save()
+            }
+
+            resolve(tags)
+        })
+    })
+}
+
+/*
 // REMOVE TAG BASED ON NAME
 function removeTags(req, res){
     var name = req.body.name
@@ -67,35 +118,65 @@ function searchByTag(req, res){
 
 }
 
-// GET TOP 5 POPULAR TAGS BASED ON NUMBER OF POSTS
-function getPopularTags(req, res){
-    Tag.find({
-
+// UPDATE MEME TITLE AND TAGS WITHIN TAGS
+function findMemeTagAndUpdate(req,res){
+    User.find({
+        memes._id:req.query.id
     }).then((tags)=>{
-        var i
-        var top5 = []
-
-        //sorting tags array by  number of posts per tag in descending order
-        tags.sort((a, b) => parseFloat(b.posts.length) - parseFloat(a.posts.length))
-
-        for(i = 0; i < 5; i++)
-        {
-            top5.push(tags[i])
+        for (i=0;i<tags.length;i++){
+            for (j=0;j<tags[i].posts[j].length;j++) {
+                if (tags[i].posts[j]._id==req.query.id){
+                    tags[i].posts[j].tags = req.query.new_tags
+                    tags[i].posts[j].title = req.query.new_title
+                    tags[i].posts[j].save()
+                }
+            }
         }
 
         res.send({
-            top5
+            msg:"success"
         })
     })
 }
 
-// GET ALL TAGS
-function getAllTags(req,res){
+// UPDATE MEME SHARED USERS WITHIN TAG
+function findMemeTagAndUpdateSharedUsers(req,res){
     Tag.find({
-
+        posts._id:req.query.id
     }).then((tags)=>{
+        for (i=0;i<tags.length;i++){
+            for (j=0;j<tags[i].posts[j].length;j++) {
+                if (tags[i].posts[j]._id==req.query.id){
+                    tags[i].posts[j].upvotes = req.query.shared_users
+                    tags[i].posts[j].save()
+                }
+            }
+        }
         res.send({
-            tags
+            msg:"success"
         })
     })
 }
+
+// UPDATE MEME COUNT WITHIN TAG
+function findMemeTagAndUpdateCount(req,res){
+    Tag.find({
+        posts._id:req.body.id
+    }).then((tags)=>{
+        for (i=0;i<tags.length;i++){
+            for (j=0;j<tags[i].posts[j].length;j++) {
+                if (tags[i].posts[j]._id==req.body.id){
+                    tags[i].posts[j].upvotes = req.body.upvotes
+                    tags[i].posts[j].downvotes = req.body.downvotes
+                    tags[i].posts[j].save()
+                }
+            }
+        }
+        res.send({
+            up:req.body.upvotes,
+            down:req.body.downvotes
+        })
+
+    })
+}
+*/

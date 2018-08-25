@@ -1,19 +1,27 @@
 <html>
     <head>
         <title>MemeHub</title>
-        <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
-        <link rel="stylesheet" type="text/css" href="chosen_v1.8.7/chosen.css">
-        <link rel="stylesheet" type="text/css" href="custom.css">
+        <link rel="stylesheet" type="text/css" href="../semantic/semantic.min.css">
+        <link rel="stylesheet" type="text/css" href="../chosen_v1.8.7/chosen.css">
+        
+        <link href="../tagit/css/jquery.tagit.css" rel="stylesheet" type="text/css">
+        <link href="../tagit/css/tagit.ui-zendesk.css" rel="stylesheet" type="text/css">
+
+        <link rel="stylesheet" type="text/css" href="../custom.css">
         <link href="https://fonts.googleapis.com/css?family=Viga" rel="stylesheet">
-        <script src="jquery-3.3.1.js"></script>
-        <script src="jquery.form.min.js"></script>
-        <script src="semantic/semantic.min.js"></script>
-        <script src="chosen_v1.8.7/chosen.jquery.js"></script>
-        <script src="modals.js"></script>
-        <script src="authentication.js"></script>
-        <script src="upload.js"></script>
-        <script src="ajax.js"></script>
-        <script src="sticky.js"></script>
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../jquery.form.min.js"></script>
+        
+        <script src="../tagit/js/tag-it.js"></script>
+        <script src="../semantic/semantic.min.js"></script>
+        <script src="../chosen_v1.8.7/chosen.jquery.js"></script>
+        <script src="../modals.js"></script>
+        <script src="../authentication.js"></script>
+        <script src="../upload.js"></script>
+        <script src="../ajax.js"></script>
+        <script src="../sticky.js"></script>
         <script>      
             $(document).ready(function(){
                 {{#if signup_message}}
@@ -40,11 +48,11 @@
 
             <div class="left-rail">
                 {{#if user}}
-                <div class="display_photo"><img src="{{user.avatar}}"></div>
+                <div class="display_photo"><img src="../{{user.avatar}}"></div>
                 <div class="small_container container">
                     <div class="header">Welcome, <span data-name="{{user.username}}" class="username">{{user.username}}</span>!
                     </div>
-                    <div class="content">Joined <span class="joined">{{user.join_date}}</span>. Uploaded <span class="meme_count">{{user.memes.length}}</span> memes.</div>
+                    <div class="content">Joined <span class="joined">{{formatDate user.join_date}}</span>. Uploaded <span class="meme_count">{{user.memes.length}}</span> memes.</div>
                 </div>
                 {{else}}
                 <div class="small_container container">
@@ -68,9 +76,10 @@
             </div>
 
             <div class="container right">
+                
                 {{#each memes}}
                 <div class="meme_container">
-                    <span class="meme_title">
+                    <span class="meme_title" data-id={{_id}}>
                         {{title}}
                         {{#if (isPrivate privacy)}}
                         <div class="ui label private">
@@ -81,7 +90,7 @@
 
                     <span class="meme_details" data-name={{user}}>by {{user}}</span>
                     <div class="meme">
-                        <img src="{{img_path}}" data-id={{_id}}>
+                        <img src="../meme/photo/{{_id}}" data-id={{_id}}>
                     </div>
                     <div class="meme_stats">
                         <span class="upvote" data-id={{_id}}>{{upvotes}}<i class="chevron circle up icon"></i></span>

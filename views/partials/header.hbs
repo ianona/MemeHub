@@ -15,7 +15,7 @@
         <div class="item">
             <div class="ui button" id="logout"><i class="sign out icon"></i>Logout</div>
         </div>
-        <div class="avatar"><img src="{{user.avatar}}"></div>
+        <div class="avatar"><img src="../{{user.avatar}}"></div>
     </div>
 </div>
 
@@ -38,6 +38,6 @@
 
 {{/if}}
 
-<form id="sort" action="sort" method="post">
+<form id="sort" action="../sort" method="post">
     <input type="text" hidden="hidden" name="sort_type" value="">
 </form>

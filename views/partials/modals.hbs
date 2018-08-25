@@ -2,7 +2,6 @@
 <div class="ui small modal login">
     <i class="close icon"></i>
     <!------LOGIN FORM------->
-    <div class="signup header">Login</div>
     <div class="content">
         <center>
             <div class="logo_small">Meme<span class="invert">Hub</span></div>
@@ -28,10 +27,10 @@
             </div>
             <div class="ui submit button" id="login_btn">Login</div>
         </form>
-        <form action="login_success" id="hidden_login_form" method="get" class="hidden">
+        <form action="../login_success" id="hidden_login_form" method="get" class="hidden">
         </form>
         <!------SIGNUP FORM------->
-        <form action="signup" class="ui form" id="signup_form" method="post">
+        <form action="user/signup" class="ui form" id="signup_form" method="post">
             <div class="three fields">
                 <div class="required field">
                     <label>Email</label>
@@ -82,12 +81,15 @@
                 <div class="field">
                     <label>Choose avatar</label>
                     <div class="container">
-                        <img class="ui avatar" src="avatar/man-2.png">
-                        <img class="ui avatar" src="avatar/boy-1.png">
-                        <img class="ui avatar" src="avatar/boy.png">
-                        <img class="ui avatar" src="avatar/girl-1.png">
-                        <img class="ui avatar" src="avatar/girl.png">
-                        <img class="ui avatar" src="avatar/man-1.png">
+                        <img class="ui avatar" src="../avatar/man-2.png">
+                        <img class="ui avatar" src="../avatar/boy-1.png">
+                        <img class="ui avatar" src="../avatar/boy.png">
+                        <img class="ui avatar" src="../avatar/girl-1.png">
+                        <img class="ui avatar" src="../avatar/girl.png">
+                        <img class="ui avatar" src="../avatar/man-1.png">
+                        <img class="ui avatar" src="../avatar/man.png">
+                        <img class="ui avatar" src="../avatar/man-3.png">
+                        <img class="ui avatar" src="../avatar/man-4.png">
                         <input type="hidden" class="hidden" name="hidden_avatar" id="hidden_avatar" value="">
                     </div>
                 </div>
@@ -108,55 +110,61 @@
 <!-------VIEW MEME MODAL------>
 <div class="ui longer modal view_modal">
     <i class="close icon"></i>
-    <div class="header">View meme</div>
     <div class="content">
         <div id="view_meme_title"></div>
         <div id="view_meme_info"></div>
         <center>
             <div class ="view_meme"><img src="" id="view_meme_img"></div>
         </center>
-        <div class="tag_holder"></div>
-        <form class="ui form">
-            <div class="field">
-                <input class="hidden" name="tag_holder" type="text">
-            </div>
-        </form>
+        
+        <div class="tag_holder">
+            <ul id="view_tags"></ul>
+            <input hidden="hidden" name="view_editTags" value="">
+        </div>
+
     </div>
-    <form class="hidden" action="deleteMeme" method="post">
+    <form class="hidden" action="../meme/deleteMeme" method="post" id="deleteMemeForm">
         <input name="id" type="text" hidden="hidden">
     </form>
 </div>
 
 <!-------REGISTERED SUCCESFULLY MODAL------->
-<div class="ui modal registerSuccess">
+<div class="ui tiny modal registerSuccess">
     <i class="close icon"></i>
     <div class="header">
-        {{#if error}}
-        Error
-        {{else}}
-        Success
-        {{/if}}
+        {{signup_message}}{{error}}
         <i class="check circle"></i></div>
     <div class="content">
-        {{signup_message}}{{error}}
+        <center>
+        {{#if error}}
+        <img class="medium ui image" src="https://media.giphy.com/media/Ty9Sg8oHghPWg/giphy.gif">
+        {{else}}
+        <img class="medium ui image" src="https://vignette.wikia.nocookie.net/epicrapbattlesofhistory/images/4/48/Squidward_dab.gif/revision/latest?cb=20161130021006">
+        {{/if}}
+        </center>
     </div>
 </div>
 
 <!-------UPLOAD SUCCESS MODAL------>
 <div class="ui tiny modal uploadSuccess_modal">
     <i class="close icon"></i>
-    <div class="header">Upload meme</div>
+    <div class="header">{{upload_message}}{{error}}</div>
     <div class="scrolling content">
-        {{upload_message}}{{error}}
+        <center>
+        {{#if error}}
+        <img class="medium ui image" src="https://media.giphy.com/media/X9jXRaNEOVAo8/giphy.gif">
+        {{else}}
+        <img class="medium ui image" src="https://cdn-images-1.medium.com/max/1600/1*sWpI87aeA7sxJsv0FKz_Pg.gif">
+        {{/if}}
+        </center>
     </div>
 </div>
 
 <!-------UPLOAD MEME MODAL------>
 <div class="ui tiny modal upload_modal">
     <i class="close icon"></i>
-    <div class="header">Upload meme</div>
     <div class="scrolling content">
-        <form class="ui form" id="frmUploader" action="upload" method="post" enctype="multipart/form-data">
+        <form class="ui form" id="frmUploader" action="../meme/upload" method="post" enctype="multipart/form-data">
             <div class="field">
                 <label>Upload a meme</label>
                 <input type="file" accept="image/png,image/jpg,image/tiff,image/gif" id="real-file" name="imgUploader" hidden="hidden" multiple>
@@ -167,7 +175,7 @@
                 </script>
             </div>
         </form>
-        <form class="ui form" id="uploadForm" action="finishUpload" method="post">
+        <form class="ui form" id="uploadForm" action="../meme/finishUpload" method="post">
             <input type="text" id="hiddenFile" name="hiddenFile" hidden="hidden">
             <div class="field">
                 <label>Give your meme a dank title</label>
@@ -176,16 +184,14 @@
 
             <div class="field">
                 <label>Tags</label>
-                <input type="text" id="tags" placeholder="#doge, #Drake"/>
-                <div id="textarea"></div>
-                <input hidden="hidden" name="tags" value="">
+                <ul id="upload_tags"></ul>
+                <input hidden="hidden" name="tags_upload" value="">
             </div>
-
             <div class="field">
                 <label>Shared users</label>
-                <select name="shared_users" class="chosen_users" multiple></select>
+                <ul id="upload_share"></ul>
+                <input hidden="hidden" name="share_upload" value="">
             </div>
-
 
             <div class="field">
                 <input id="status" name="status" type="text" hidden="hidden">
@@ -201,14 +207,13 @@
 <!-------LOGOUT MODAL------>
 <div class="ui tiny modal logout">
     <i class="close icon"></i>
-    <div class="signup header">Logout</div>
     <div class="content">
         <center>
             <div class="logo_small">Meme<span class="invert">Hub</span></div>
             <div class="logout_prompt">
                 Are you sure you want to logout?
                 <div class="logout_buttons">
-                    <a href="logout">
+                    <a href="../logout">
                         <div class="ui orange button" id="logout_btn">Logout</div>
                     </a>
 
@@ -233,7 +238,7 @@
 
         </div>
         View full profile <span class="hyperlink goto_profile">here</span>.
-        <form class="hidden" action="profile" method="get" id="profile">
+        <form class="hidden" action="user/profile" method="get" id="profile">
             <input hidden="hidden" type="text" id="profileInput" name="profileID">
         </form>
     </div>
@@ -242,13 +247,11 @@
 <!-------SHARE MEME MODAL------>
 <div class="ui small modal share_modal">
     <i class="close icon"></i>
-    <div class="header">Share meme</div>
     <div class="content">
+        <label>Share to:</label>
+        <ul id="share_users">
+        </ul>
         <form class="ui form" id="shareMeme">
-            <div class="field">
-                <label>Share to:</label>
-                <select name="shared_users" id="share_users" class="chosen_users" multiple></select>
-            </div>
             <div class="ui inverted button orange" id="share">Share</div>
         </form>
     </div>
