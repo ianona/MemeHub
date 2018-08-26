@@ -96,9 +96,9 @@ function insertMeme(meme) {
     $(span3).attr("data-id", meme._id)
     $(span3).append(icon3)
 
-    $(memeStats).append(span1)
-    $(memeStats).append(span2)
-    if (meme.user == "{{user.username}}")
+    //$(memeStats).append(span1)
+    //$(memeStats).append(span2)
+    if (meme.user == $("span.username").attr("data-name"))
         $(memeStats).append(span3)
     $(memeContainer).append(memeStats)
 
@@ -247,6 +247,10 @@ function viewMeme() {
         })
 }
 
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
 function viewUser() {
     let name = $(this).attr('data-name')
     $.ajax({
@@ -256,7 +260,10 @@ function viewUser() {
         success: function (data) {
             $(".view_profile .header").text(data.user.username);
             $(".view_profile .display_photo img").attr("src", data.user.avatar);
-            $(".view_profile span.joined").text(data.user.join_date)
+
+            var d = new Date(data.user.join_date);
+
+            $(".view_profile span.joined").text(monthNames[d.getMonth()] + " " + d.getDate() + ", " + d.getFullYear())
             $(".view_profile span.meme_count").text(data.user.memes.length)
             $(".view_profile div.tiny.images").empty()
             let counter = 0

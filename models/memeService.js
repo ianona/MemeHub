@@ -36,6 +36,34 @@ module.exports.getAllMemesByUser = function(user){
     })
 }
 
+// SEARCH FOR MEME BASED ON SHARED USERS
+module.exports.getAllMemesByUserWithShare = function(user){
+    //var n = req.session.meme_count
+    return new Promise(function(resolve,reject){
+        Meme.find({
+            $or:[
+                {
+                    privacy:"public"
+                },
+                {
+                    privacy:"private",
+                    user:user.username
+                },
+                {
+                    privacy:"private",
+                    shared_users:{
+                        $in:user.username
+                    }
+                }
+            ]
+        }).then((memes)=>{
+            resolve(memes)
+        }, (err)=>{
+            reject(err)
+        })
+    })
+}
+
 // FIND MEME BASED ON ID AND RETURN MEME
 module.exports.findMeme = function(id){
     return new Promise(function(resolve,reject){
@@ -119,8 +147,10 @@ module.exports.updateSharedUsers = function(id, shared_users){
             _id:id
         }, {
             shared_users:shared_users
-        }).then(()=>{
-            resolve()
+        }, {
+            returnNewDocument:false
+        }).then((oldDoc)=>{
+            resolve(oldDoc)
         },(err)=>{
             reject(err)
         })
@@ -209,38 +239,6 @@ function updateVotes(req,res){
             up:req.body.upvotes,
             down:req.body.downvotes
         })
-    })
-}
-
-// SEARCH FOR MEME BASED ON SHARED USERS
-function findMeme(req,res){
-    var n = req.session.meme_count
-    let user = req.session.user
-    Meme.find({
-        $or:[
-            {
-                privacy:"public"
-            },
-            {
-                privacy:"private",
-                user:user.username
-            },
-            {
-                privacy:"private",
-                $elemMatch: { shared_users: user.username } 
-            }
-        ]
-    }).then((memes)=>{
-        let user = req.session.user
-        memes.sort(curSort)
-        memes = memes.slice(0,n)
-        if (user){
-            res.redirect("/login_success")
-        } else {
-            res.render("index.hbs",{
-                memes
-            })
-        }
     })
 }
 */

@@ -306,7 +306,7 @@ a.ui.label:nth-child(2n) {
     margin:6px;
 }
 
-.ui.label.private{
+.ui.label.private, .ui.label.shared{
     background-color: #212121;
     border:1px solid white;
     color:white;
@@ -466,4 +466,34 @@ form#uploadForm ul li:last-child:hover{
 form#uploadForm ul input{
     border:0px;
     padding:0;
+}
+
+img#preview{
+    max-width:180px;
+    box-shadow: 1px 1px 4px .5px rgb(167, 167, 167);
+    text-align: center;
+}
+
+div.preview, img#preview{
+    display:none;
+}
+
+div.upload_modal{
+    overflow-x: hidden;
+}
+
+div.uploader{
+    border:2px dashed #e8e8e8;
+    padding:10px;
+    margin-top:5px;
+    position:relative;
+    overflow:hidden;
+}
+
+input#real-file{
+    display: none;
+}
+
+div.meme_stats{
+    height:30px;
 }

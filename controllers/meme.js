@@ -37,24 +37,25 @@ router.post("/finishUpload", urlencoder, (req, res) => {
         upvotes: 0,
         downvotes: 0
     })
-    
-    let tags = req.body.tags_upload.split(' ').filter(Boolean)
-    for (i = 0; i < tags.length; i++) {
-        TagService.addTag(tags[i], m).then((tag) => {
-            console.log("[Tag] Successfully added: " + tag)
-        }, (err) => {
-            console.log("[Tag] Something went wrong:  " + err)
-        })
-    }
-
-    UserService.addMemeToUser(req.session.user.username, m).then((user) => {
-        console.log("[User] Added meme to user: " + user)
-    }, (err) => {
-        console.log("[User] Something went wrong:  " + err)
-    })
 
     MemeService.addNewMeme(m).then((meme) => {
         MemeService.getAllMemesByUser(req.session.user).then((memes) => {
+            let tags = req.body.tags_upload.split(' ').filter(Boolean)
+            for (i = 0; i < tags.length; i++) {
+                TagService.addTag(tags[i], m).then((tag) => {
+                    console.log("[Tag] Successfully added: " + tag)
+                }, (err) => {
+                    console.log("[Tag] Something went wrong:  " + err)
+                })
+            }
+
+            UserService.addMemeToUser(req.session.user.username, m).then((user) => {
+                console.log("[User] Added meme to user: " + user)
+            }, (err) => {
+                console.log("[User] Something went wrong:  " + err)
+            })
+
+            memes.sort(curSort)
             res.render("index.hbs", {
                 user: req.session.user,
                 memes,
@@ -62,10 +63,18 @@ router.post("/finishUpload", urlencoder, (req, res) => {
             })
         })
     }, (err) => {
-        console.log("[Meme] Save failure: " + err)
+        MemeService.getAllMemesByUser(req.session.user).then((memes) => {
+            memes.sort(curSort)
+            res.render("index.hbs", {
+                user: req.session.user,
+                memes,
+                upload_message: "Sorry, something went wrong: ",
+                error: err
+            })
+        })
     })
-    
 })
+
 
 // ROUTE FOR WHEN USER DELETES MEME
 // DELETE MEME
@@ -78,7 +87,7 @@ router.post('/deleteMeme', urlencoder, (req, res) => {
         var owner = meme.user
         MemeService.deleteMeme(req.body.id).then((result) => {
             console.log("[Meme] Delete Success!")
-            TagService.deleteTagMeme(req.body.id).then((tags)=>{
+            TagService.deleteTagMeme(req.body.id).then((tags) => {
                 console.log("[Tag] Successfully removed meme from tag")
                 UserService.deleteUserMeme(owner, req.body.id).then((newUser) => {
                     res.redirect("../")
@@ -117,28 +126,38 @@ router.get('/search', urlencoder, (req, res) => {
 
     MemeService.search(req.query.tags, uname).then((memes) => {
         console.log("[Meme] Search success!")
+        memes.sort(curSort)
         res.send({ memes })
     })
 })
 
 // AJAX ROUTE USED WHEN USER EDITS SHARED USERS FOR OWNED MEME
 // UPDATE SHARED USERS ARRAY FOR MEME
-router.get('/updateSharedUsers', urlencoder, (req,res)=>{
-    MemeService.updateSharedUsers(req.query.id,req.query.shared_users).then((updatedDoc)=>{
+router.get('/updateSharedUsers', urlencoder, (req, res) => {
+    MemeService.updateSharedUsers(req.query.id, req.query.shared_users).then((oldDoc) => {
+        /*
+        UserService.findMemeUserAndUpdateSharedUsers(req.query.id, req.query.shared_users).then((updatedMeme)=>{
+            res.send({
+                updatedMeme
+            })
+        }, (err)=>{
+            console.log("[User] Error in updating meme within user: "+err)
+        })
+        */
         res.send({
-            updatedDoc
+            oldDoc
         })
     })
 })
 
 // AJAX ROUTE USED WHEN EDITING MEMES
 // FIND MEME BY ID AND UPDATE NAME AND TAGS
-router.get('/editMeme', urlencoder, (req,res)=>{
+router.get('/editMeme', urlencoder, (req, res) => {
     let id = req.query.id
     let newTitle = req.query.new_title
     let newTags = req.query.new_tags
-    MemeService.editMeme(id,newTitle,newTags).then((updatedDoc)=>{
-        for(i=0;i<newTags.length;i++){
+    MemeService.editMeme(id, newTitle, newTags).then((updatedDoc) => {
+        for (i = 0; i < newTags.length; i++) {
             TagService.addTag(newTags[i], updatedDoc).then((tag) => {
                 console.log("[Tag] Successfully edited: " + tag)
             }, (err) => {
@@ -147,7 +166,7 @@ router.get('/editMeme', urlencoder, (req,res)=>{
         }
 
         res.send({
-            msg:"success"
+            msg: "success"
         })
     })
 })

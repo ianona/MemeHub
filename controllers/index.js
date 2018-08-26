@@ -37,7 +37,7 @@ function trending(a,b){
     return -1
 }
 
-var curSort = top
+global.curSort = top
 
 // GET ALL PUBLIC MEMES
 router.get("/",(req,res)=>{
@@ -60,7 +60,7 @@ router.get("/",(req,res)=>{
 router.get("/login_success", (req,res)=>{
     console.log("GET /login_success")
     let user = req.session.user
-    MemeService.getAllMemesByUser(user).then((memes)=>{
+    MemeService.getAllMemesByUserWithShare(user).then((memes)=>{
         memes.sort(curSort)
         res.render("index.hbs",{
             user,

@@ -30,7 +30,7 @@
         <form action="../login_success" id="hidden_login_form" method="get" class="hidden">
         </form>
         <!------SIGNUP FORM------->
-        <form action="user/signup" class="ui form" id="signup_form" method="post">
+        <form action="../user/signup" class="ui form" id="signup_form" method="post">
             <div class="three fields">
                 <div class="required field">
                     <label>Email</label>
@@ -165,14 +165,22 @@
     <i class="close icon"></i>
     <div class="scrolling content">
         <form class="ui form" id="frmUploader" action="../meme/upload" method="post" enctype="multipart/form-data">
+            
             <div class="field">
                 <label>Upload a meme</label>
-                <input type="file" accept="image/png,image/jpg,image/tiff,image/gif" id="real-file" name="imgUploader" hidden="hidden" multiple>
+            </div>
+            <div class="field uploader" id="uploader">
+                <input type="file" accept="image/png,image/jpg,image/tiff,image/gif" id="real-file" name="imgUploader" hidden="hidden" onchange="readURL(this);" multiple>
                 <div class="ui button orange" id="custom-button">Choose a file</div>
-                <span id="custom-text">No meme chosen yet</span>
-                <script type="text/javascript">
-
-                </script>
+                <span id="custom-text">or Drag and Drop an image</span>
+            </div>
+            <div class="field preview">
+                <label>Image preview</label>
+            </div>
+            <div class="ui small image">
+                <center>
+                <img id="preview" src="http://placehold.it/180" alt="your image" />
+                </center>
             </div>
         </form>
         <form class="ui form" id="uploadForm" action="../meme/finishUpload" method="post">
@@ -238,7 +246,7 @@
 
         </div>
         View full profile <span class="hyperlink goto_profile">here</span>.
-        <form class="hidden" action="user/profile" method="get" id="profile">
+        <form class="hidden" action="../user/profile" method="get" id="profile">
             <input hidden="hidden" type="text" id="profileInput" name="profileID">
         </form>
     </div>

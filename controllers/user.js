@@ -35,7 +35,7 @@ router.post("/signup", urlencoder, (req,res)=>{
     UserService.signup(u).then((user)=>{
         console.log("[User] Successfully registered " + user)
         MemeService.getAllPublicMemes().then((memes)=>{
-            //memes.sort(curSort)
+            memes.sort(curSort)
             res.render("index.hbs",{
                 memes,
                 signup_message:"You have successfully registered for a MemeHub account!"
@@ -43,7 +43,7 @@ router.post("/signup", urlencoder, (req,res)=>{
         })
     }, (err)=>{
         MemeService.getAllPublicMemes().then((memes)=>{
-            //memes.sort(curSort)
+            memes.sort(curSort)
             res.render("index.hbs",{
                 memes,
                 signup_message:"Sorry, something went wrong: ",

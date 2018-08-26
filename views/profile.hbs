@@ -63,7 +63,7 @@
             
             <div class="container right">
                 {{#each profile.memes}}
-                {{#if (isPublic privacy)}}
+                {{#if (isValid ../user.username user privacy shared_users)}}
                 <div class="meme_container">
                     <span class="meme_title" data-id={{_id}}>
                         {{title}}
@@ -72,6 +72,14 @@
                             Private
                         </div>
                         {{/if}}
+
+                        {{#if ../user}}
+                            {{#if (notEqual user ../user.username)}}
+                            <div class="ui label shared">
+                                Shared
+                            </div>
+                            {{/if}}
+                        {{/if}}
                     </span>
 
                     <span class="meme_details" data-name={{user}}>by {{user}}</span>
@@ -79,10 +87,9 @@
                         <img src="../meme/photo/{{_id}}" data-id={{_id}}>
                     </div>
                     <div class="meme_stats">
-                        <span class="upvote" data-id={{_id}}>{{upvotes}}<i class="chevron circle up icon"></i></span>
-                        <span class="downvote" data-id={{_id}}>{{downvotes}}<i class="chevron circle down icon"></i></span>
+                        
                         {{#if (equal user ../user.username)}}
-                        <span data-id={{_id}} class="share"><i class="share icon"></i></span>
+                        <span data-id={{_id}} class="share"><i data-id={{_id}} class="share icon"></i></span>
                         {{/if}}
                     </div>
                 </div>

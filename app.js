@@ -33,6 +33,10 @@ hbs.registerHelper("equal", (n,a)=>{
     return n==a;
 })
 
+hbs.registerHelper("notEqual", (n,a)=>{
+    return n!=a;
+})
+
 // HBS HELPER TO CHECK FOR PRIVACY
 hbs.registerHelper("isPrivate", (n)=>{
     return n=="private";
@@ -46,6 +50,19 @@ hbs.registerHelper("isPublic", (n)=>{
 // HBS HELPER TO FORMAT DATE OBJECTS
 hbs.registerHelper("formatDate", (date)=>{
     return moment(date).format('MMM DD, YYYY');
+})
+
+// HBS HELPER TO FORMAT DATE OBJECTS
+hbs.registerHelper("isValid", (username, profilename, privacy, shared_users)=>{
+    if (username == profilename)
+        return true
+    if (privacy=="public")
+        return true
+    console.log(shared_users)
+    if (shared_users.indexOf(username) != -1)
+        return true
+    
+    return false
 })
 
 // SETUP STATIC FILES

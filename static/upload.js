@@ -30,14 +30,14 @@ $(document).ready(function () {
 
     $("#upload").click(prepareUpload)
 
-    $("span.share").click(prepareShare)
+    $("i.share").click(prepareShare)
     $("div#share").click(shareMeme)
 
     //$(".chosen_users").chosen();
     $("ul#share_users").tagit();
     $("ul#upload_share").tagit();
     $("ul#upload_tags").tagit();
-    
+
     prepareFile()
 })
 
@@ -53,13 +53,13 @@ function prepareUpload() {
             for (i = 0; i < res.users.length; i++)
                 users.push(res.users[i].username)
             $("ul#upload_share").tagit({
+                showAutocompleteOnFocus: true,
                 availableTags: users,
                 beforeTagAdded: function (event, ui) {
                     if ($.inArray(ui.tagLabel, users) == -1) {
                         return false;
                     }
-                },
-                showAutocompleteOnFocus:true
+                }
             });
         }
     })
@@ -107,6 +107,8 @@ function prepareShare() {
 
 function shareMeme() {
     let shared_users = $("ul#share_users").tagit("assignedTags");
+    if (shared_users == null || shared_users.length == 0)
+        shared_users = []
     let id = $("form#shareMeme").attr("data-id")
 
     $.ajax({
@@ -122,21 +124,18 @@ function shareMeme() {
 function prepareFile() {
     const realFileBtn = document.getElementById("real-file");
     const customBtn = document.getElementById("custom-button");
-    const customTxt = document.getElementById("custom-text");
-
+    
     customBtn.addEventListener("click", function () {
         realFileBtn.click();
     })
 
-    realFileBtn.addEventListener("change", function () {
-        if (realFileBtn.value) { //if a file is chosen
-            let filename = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]
-            customTxt.innerHTML = filename;
-            $("#hiddenFile").val(filename)
-            console.log($("#hiddenFile").val())
-        } else
-            customTxt.innerHTML = "No meme chosen yet";
-    })
+    realFileBtn.addEventListener('change', readURL, false);
+
+    var dropbox;
+    dropbox = document.getElementById("uploader");
+    dropbox.addEventListener("dragenter", dragenter, false);
+    dropbox.addEventListener("dragover", dragover, false);
+    dropbox.addEventListener("drop", drop, false);
 }
 
 function showRequest(formData, jqForm, options) {
@@ -159,7 +158,7 @@ function showResponse(responseText, statusText, xhr, $form) {
             $("input[name=share_upload]").val(cur + " " + shareArray[i])
         }
 
-        
+
         $("#uploadForm").submit()
     }
     //alert('status: ' + statusText + '\n\nresponseText: \n' + responseText );
@@ -167,4 +166,50 @@ function showResponse(responseText, statusText, xhr, $form) {
 
 function uploadMeme() {
     $('#frmUploader').submit()
+}
+
+function dragenter(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function dragover(e) {
+    e.stopPropagation();
+    e.preventDefault();
+}
+
+function drop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+
+    var dt = e.dataTransfer;
+    var files = dt.files;
+    var imageLoader = document.getElementById('real-file');
+
+    imageLoader.files = files;
+}
+
+function readURL(input) {
+    const realFileBtn = document.getElementById("real-file");
+    const customTxt = document.getElementById("custom-text");
+    if (realFileBtn.value) { //if a file is chosen
+        let filename = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]
+        customTxt.innerHTML = filename;
+        $("#hiddenFile").val(filename)
+    } else
+        customTxt.innerHTML = "No meme chosen yet";
+
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#preview')
+                .attr('src', e.target.result);
+        };
+
+        $("div.preview").css("display", "block")
+        $("img#preview").css("display", "block")
+
+        reader.readAsDataURL(input.files[0]);
+    }
 }
