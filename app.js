@@ -20,7 +20,7 @@ mongoose.connect("mongodb://localhost:27017/MP2",{
     useNewUrlParser:true
 })
 */
-mongoose.connect("mongodb://ianbenedictona:Godisgood!14@ds133622.mlab.com:33622/webapde_mc03",{
+mongoose.connect("mongodb://memehub:memehub123@ds133622.mlab.com:33622/webapde_mc03",{
     useNewUrlParser:true
 })
 app.use(express.static(__dirname+"/static"))
