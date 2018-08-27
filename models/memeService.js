@@ -148,9 +148,9 @@ module.exports.updateSharedUsers = function(id, shared_users){
         }, {
             shared_users:shared_users
         }, {
-            returnNewDocument:false
-        }).then((oldDoc)=>{
-            resolve(oldDoc)
+            returnNewDocument:true
+        }).then((newDoc)=>{
+            resolve(newDoc)
         },(err)=>{
             reject(err)
         })

@@ -26,8 +26,10 @@ module.exports.getPopularTags = function () {
             tags.sort((a, b) => parseFloat(b.posts.length) - parseFloat(a.posts.length))
 
             for (i = 0; i < 5; i++) {
-                top5.push(tags[i])
+                if (tags[i] != null)
+                    top5.push(tags[i])
             }
+
 
             resolve(top5)
         })

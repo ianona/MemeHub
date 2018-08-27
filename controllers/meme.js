@@ -50,16 +50,15 @@ router.post("/finishUpload", urlencoder, (req, res) => {
             }
 
             UserService.addMemeToUser(req.session.user.username, m).then((user) => {
-                console.log("[User] Added meme to user: " + user)
+                console.log("[User] Successfully added meme to user")
+                memes.sort(curSort)
+                res.render("index.hbs", {
+                    user: user,
+                    memes,
+                    upload_message: "You have successfully uploaded a meme!"
+                })
             }, (err) => {
                 console.log("[User] Something went wrong:  " + err)
-            })
-
-            memes.sort(curSort)
-            res.render("index.hbs", {
-                user: req.session.user,
-                memes,
-                upload_message: "You have successfully uploaded a meme!"
             })
         })
     }, (err) => {
@@ -113,6 +112,7 @@ router.post("/upload", (req, res) => {
         if (err) {
             return res.end("Something went wrong!");
         }
+        console.log(req)
         return res.end("File uploaded sucessfully!");
     });
 })
@@ -134,18 +134,17 @@ router.get('/search', urlencoder, (req, res) => {
 // AJAX ROUTE USED WHEN USER EDITS SHARED USERS FOR OWNED MEME
 // UPDATE SHARED USERS ARRAY FOR MEME
 router.get('/updateSharedUsers', urlencoder, (req, res) => {
-    MemeService.updateSharedUsers(req.query.id, req.query.shared_users).then((oldDoc) => {
-        /*
-        UserService.findMemeUserAndUpdateSharedUsers(req.query.id, req.query.shared_users).then((updatedMeme)=>{
+    MemeService.updateSharedUsers(req.query.id, req.query.shared_users).then((newDoc) => {
+        UserService.findMemeUserAndUpdateSharedUsers(req.query.id, newDoc).then((updatedMeme)=>{
+            console.log("[User] Successfully updated meme within user")
             res.send({
                 updatedMeme
             })
         }, (err)=>{
             console.log("[User] Error in updating meme within user: "+err)
-        })
-        */
-        res.send({
-            oldDoc
+            res.send({
+                updatedMeme
+            })
         })
     })
 })
@@ -156,6 +155,8 @@ router.get('/editMeme', urlencoder, (req, res) => {
     let id = req.query.id
     let newTitle = req.query.new_title
     let newTags = req.query.new_tags
+    if (newTags ==null)
+        newTags = []
     MemeService.editMeme(id, newTitle, newTags).then((updatedDoc) => {
         for (i = 0; i < newTags.length; i++) {
             TagService.addTag(newTags[i], updatedDoc).then((tag) => {
@@ -164,6 +165,12 @@ router.get('/editMeme', urlencoder, (req, res) => {
                 console.log("[Tag] Something went wrong:  " + err)
             })
         }
+
+        UserService.findMemeUserAndUpdate(id,updatedDoc).then((newU)=>{
+            console.log("[User] Successfully edited: " + newU)
+        }, (err) => {
+            console.log("[User] Something went wrong:  " + err)
+        })
 
         res.send({
             msg: "success"

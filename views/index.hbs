@@ -85,7 +85,7 @@
                         <div class="ui label private">
                             Private
                         </div>
-                        {{/if}}
+                        
 
                         {{#if ../user}}
                             {{#if (notEqual user ../user.username)}}
@@ -93,6 +93,7 @@
                                 Shared
                             </div>
                             {{/if}}
+                        {{/if}}
                         {{/if}}
                         
                     </span>
@@ -104,11 +105,18 @@
                     <div class="meme_stats">
                         
                         {{#if (equal user ../user.username)}}
+                        {{#if (isPrivate privacy)}}
                         <span data-id={{_id}} class="share"><i data-id={{_id}} class="share icon"></i></span>
+                        {{else}}
+                        <span data-id={{_id}} class="share"><i data-id={{_id}} class="disabled share icon"></i></span>
+                        {{/if}}
                         {{/if}}
                     </div>
                 </div>
                 {{/each}}
+                {{#if (isEmpty memes)}}
+                <div class="ui big orange message">No memes loaded</div>
+                {{/if}}
             </div>
         </div>
         {{> modals}}

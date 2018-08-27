@@ -41,6 +41,7 @@
         
         <!-------WRAPPER FOR LOGO AND MEME DASHBOARD------>
         <div class="wrapper">
+            <span data-name="{{user.username}}" class="username" style="display:none"></span>
             <div class="scroller_anchor2"></div>
             <div class="upper_profile">
                 <div class="display_photo"><img src="../{{profile.avatar}}"></div>
@@ -71,7 +72,7 @@
                         <div class="ui label private">
                             Private
                         </div>
-                        {{/if}}
+                        
 
                         {{#if ../user}}
                             {{#if (notEqual user ../user.username)}}
@@ -79,6 +80,7 @@
                                 Shared
                             </div>
                             {{/if}}
+                        {{/if}}
                         {{/if}}
                     </span>
 
@@ -89,12 +91,19 @@
                     <div class="meme_stats">
                         
                         {{#if (equal user ../user.username)}}
+                        {{#if (isPrivate privacy)}}
                         <span data-id={{_id}} class="share"><i data-id={{_id}} class="share icon"></i></span>
+                        {{else}}
+                        <span data-id={{_id}} class="share"><i data-id={{_id}} class="disabled share icon"></i></span>
+                        {{/if}}
                         {{/if}}
                     </div>
                 </div>
                 {{/if}}
                 {{/each}}
+                {{#if (isEmpty profile.memes)}}
+                <div class="ui big orange message">No memes loaded</div>
+                {{/if}}
             </div>
         </div>
         {{> modals}}

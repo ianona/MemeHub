@@ -47,7 +47,6 @@ function sort(){
     let type= $(this).text()
     $("input[name=sort_type]").val(type.toLowerCase())
     
-    console.log($("input[name=sort_type]").val())
     $("div.ui.small.borderless.sticky a.item").removeClass("active")
     $(this).addClass("active")
     $("form#sort").submit()

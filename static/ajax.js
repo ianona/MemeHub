@@ -98,6 +98,8 @@ function insertMeme(meme) {
 
     //$(memeStats).append(span1)
     //$(memeStats).append(span2)
+    if (meme.privacy == "private")
+        $(icon3).addClass("disabled")
     if (meme.user == $("span.username").attr("data-name"))
         $(memeStats).append(span3)
     $(memeContainer).append(memeStats)
@@ -105,7 +107,7 @@ function insertMeme(meme) {
     $(memeImg).click(viewMeme)
     $(details).click(viewUser)
 
-    $(span1).click(vote)
+    $(span1).click(vote) 
     $(span2).click(vote)
 
     $(".wrapper .container.right").append(memeContainer)
@@ -119,12 +121,14 @@ function updateSort() {
         success: function (res) {
             $("div.ui.small.borderless.sticky a.item").removeClass("active")
             switch (res.result) {
-                case "top":
-                    $("a[data-type=top]").addClass("active")
+                case "recent":
+                    $("a[data-type=recent]").addClass("active")
                     break
+                /*
                 case "hot":
                     $("a[data-type=hot]").addClass("active")
                     break
+                */
                 case "trending":
                     $("a[data-type=trending]").addClass("active")
                     break
@@ -182,11 +186,12 @@ function updatePopularTags() {
         method: 'GET',
         data: {},
         success: function (res) {
-            for (i = 0; i < res.tags.length; i++) {
+            let tags = res.tags
+            for (i = 0; i < tags.length; i++) {
                 let a = document.createElement("a")
                 $(a).addClass("ui")
                 $(a).addClass("label")
-                $(a).text("#" + res.tags[i].name)
+                $(a).text("#" + tags[i].name)
                 $(a).click(addSearch)
                 $("div#popular_tags").append(a)
             }
@@ -197,7 +202,7 @@ function updatePopularTags() {
 function addSearch() {
     let value = $(this).text().replace('#', '')
     $(".chosen option[value=" + value + "]").attr("selected", true)
-    $(".chosen").val(value)
+    //$(".chosen").val(value)
     $(".chosen").trigger("chosen:updated");
     updateSearch()
 }
@@ -214,8 +219,11 @@ function viewMeme() {
                 $("div.ui.longer.modal.view_modal div.view_meme img").attr("src", "../meme/photo/" + data.meme._id)
 
                 $("ul#view_tags").tagit("removeAll");
-                for (i = 0; i < data.meme.tags.length; i++) {
-                    $('ul#view_tags').tagit('createTag', data.meme.tags[i]);
+                let tags = data.meme.tags
+                if (tags==null)
+                    tags=[]
+                for (i = 0; i < tags.length; i++) {
+                    $('ul#view_tags').tagit('createTag',tags[i]);
                 }
 
 
@@ -259,7 +267,7 @@ function viewUser() {
         data: { name },
         success: function (data) {
             $(".view_profile .header").text(data.user.username);
-            $(".view_profile .display_photo img").attr("src", data.user.avatar);
+            $(".view_profile .display_photo img").attr("src", "../"+data.user.avatar);
 
             var d = new Date(data.user.join_date);
 

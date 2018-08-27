@@ -99,61 +99,56 @@ module.exports.deleteUserMeme = function (owner, memeID) {
 }
 
 // UPDATE MEME's SHARED USERS WITHIN USER
-module.exports.findMemeUserAndUpdateSharedUsers = function (id, shared_users) {
+module.exports.findMemeUserAndUpdateSharedUsers = function (id, newDoc) {
     return new Promise(function (resolve, reject) {
-        /*
         User.find().then((users) => {
+            var index = -1
             for (j = 0; j < users.length; j++) {
                 for (k = 0; k < users[j].memes.length; k++) {
-                    if (users[j].memes[k]._id == id) {
-                        users[j].memes[k].shared_users = shared_users
-                        users[j].memes[k].save().then((updatedDoc) => {
-                            resolve(updatedDoc)
-                        }, (err)=>{
-                            reject(err)
-                        })
+                    if (users[j].memes[k]._id.toString() === id.toString()) {
+                        users[j].memes.splice(k,1)
+                        users[j].memes.push(newDoc)
+                        index = j
+                        break;
                     }
                 }
             }
-            */
-        console.log("ID: "+id)
-        User.find({
-            "memes": {$elemMatch: {"_id": ""+id}}
-        }).then((user)=>{
-            console.log("FOUND USER: "+JSON.stringify(user))
-            let memes = user.memes
-            for (i=0;i<memes.length;i++){
-                if (memes[i]._id==id) {
-                    memes[i].shared_users=shared_users
-                    memes[i].save().then((updatedDoc)=>{
-                        resolve(updatedDoc)
-                    })
+
+            users[index].save().then((updatedUser)=>{
+                resolve(updatedUser)
+            }, (err)=>{
+                reject(err)
+            })
+        })    
+    })
+}
+
+// UPDATE MEME TITLE AND TAGS WITHIN USER
+module.exports.findMemeUserAndUpdate = function(id, updatedDoc){
+    return new Promise(function (resolve, reject) {
+        User.find().then((users) => {
+            var index = -1
+            for (j = 0; j < users.length; j++) {
+                for (k = 0; k < users[j].memes.length; k++) {
+                    if (users[j].memes[k]._id.toString() === id.toString()) {
+                        users[j].memes.splice(k,1)
+                        users[j].memes.push(updatedDoc)
+                        index = j
+                        break;
+                    }
                 }
             }
-        })
+
+            users[index].save().then((updatedUser)=>{
+                resolve(updatedUser)
+            }, (err)=>{
+                reject(err)
+            })
+        })    
     })
 }
 
 /*
-// UPDATE MEME TITLE AND TAGS WITHIN USER
-function findMemeUserAndUpdate(req,res){
-    User.findOne({
-        memes._id:req.query.id
-    }).then((user)=>{
-        let memes = user.memes
-        for (i=0;i<memes.length;i++){
-            if (memes[i]._id==_id:req.query.id) {
-                memes[i].tags = req.query.new_tags
-                memes[i].title = req.query.new_title
-                memes[i].save()
-                break
-            }
-        }
-        res.send({
-            msg:"success"
-        })
-    })
-}
 
 // UPDATE MEME COUNT WITHIN USER
 function findMemeUserAndUpdateCount(req,res){

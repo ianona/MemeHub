@@ -165,7 +165,7 @@
     <i class="close icon"></i>
     <div class="scrolling content">
         <form class="ui form" id="frmUploader" action="../meme/upload" method="post" enctype="multipart/form-data">
-            
+            <input type="text" id="hiddenFile2" name="hiddenFile2" hidden="hidden">
             <div class="field">
                 <label>Upload a meme</label>
             </div>
@@ -195,7 +195,7 @@
                 <ul id="upload_tags"></ul>
                 <input hidden="hidden" name="tags_upload" value="">
             </div>
-            <div class="field">
+            <div class="field" id="share_field">
                 <label>Shared users</label>
                 <ul id="upload_share"></ul>
                 <input hidden="hidden" name="share_upload" value="">
@@ -237,7 +237,7 @@
     <i class="close icon"></i>
     <div class="header">admin1</div>
     <div class="content">
-        <div class="display_photo"><img src="avatar/man-1.png"></div>
+        <div class="display_photo"><img src="../avatar/man-1.png"></div>
     </div>
     <div class="content">
         Joined <span class="joined"></span>. Uploaded <span class="meme_count"></span> memes.

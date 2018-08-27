@@ -1,10 +1,12 @@
 $(document).ready(function () {
     $("#status").val("public")
     $("#public-button").css('background-color', '#c76d00');
+    $("div#share_field").css('display','none')
 
     $("#private-button").click(function () {
         $(this).css('background-color', '#c76d00');
         $("#public-button").css('background-color', '#e89c23')
+        $("div#share_field").css('display','block')
 
         $("#status").val("private")
     });
@@ -12,7 +14,9 @@ $(document).ready(function () {
     $("#public-button").click(function () {
         $(this).css('background-color', '#c76d00');
         $("#private-button").css('background-color', '#e89c23')
+        $("div#share_field").css('display','none')
 
+        $("ul#upload_share").tagit("removeAll");
         $("#status").val("public")
     });
 
@@ -67,42 +71,45 @@ function prepareUpload() {
 }
 
 function prepareShare() {
-    let username = $("span.username").attr("data-name")
-    //$("ul#share_users li").remove()
-    $("ul#share_users").tagit("removeAll");
-    $.ajax({
-        url: '../user/getUsers',
-        method: 'GET',
-        data: { username },
-        success: function (res) {
-            users = []
-            for (i = 0; i < res.users.length; i++)
-                users.push(res.users[i].username)
-            $("ul#share_users").tagit({
-                availableTags: users,
-                beforeTagAdded: function (event, ui) {
-                    if ($.inArray(ui.tagLabel, users) == -1) {
-                        return false;
+    if (!$(this).hasClass("disabled")) {
+        let username = $("span.username").attr("data-name")
+        //$("ul#share_users li").remove()
+        $("ul#share_users").tagit("removeAll");
+        $.ajax({
+            url: '../user/getUsers',
+            method: 'GET',
+            data: { username },
+            success: function (res) {
+                users = []
+                for (i = 0; i < res.users.length; i++)
+                    users.push(res.users[i].username)
+                $("ul#share_users").tagit({
+                    availableTags: users,
+                    beforeTagAdded: function (event, ui) {
+                        if ($.inArray(ui.tagLabel, users) == -1) {
+                            return false;
+                        }
                     }
-                }
-            });
-        }
-    })
-
-    let id = $(this).attr('data-id')
-    $.post(
-        '../meme/viewMeme',
-        { id },
-        function (data, status) {
-            if (status === 'success') {
-                for (i = 0; i < data.meme.shared_users.length; i++) {
-                    $('ul#share_users').tagit('createTag', data.meme.shared_users[i]);
-                }
+                });
             }
         })
-
-    $("form#shareMeme").attr("data-id", id)
-    $(".share_modal").modal('show')
+    
+        let id = $(this).attr('data-id')
+        $.post(
+            '../meme/viewMeme',
+            { id },
+            function (data, status) {
+                if (status === 'success') {
+                    for (i = 0; i < data.meme.shared_users.length; i++) {
+                        $('ul#share_users').tagit('createTag', data.meme.shared_users[i]);
+                    }
+                }
+            })
+        
+        $("form#shareMeme").attr("data-id", id)
+        $(".share_modal").modal('show')
+    }
+    
 }
 
 function shareMeme() {
@@ -152,12 +159,15 @@ function showResponse(responseText, statusText, xhr, $form) {
             $("input[name=tags_upload]").val(cur + " " + tagArray[i])
         }
 
-        let shareArray = $("ul#upload_share").tagit("assignedTags");
-        for (i = 0; i < shareArray.length; i++) {
-            let cur = $("input[name=share_upload]").val()
-            $("input[name=share_upload]").val(cur + " " + shareArray[i])
+        if ($("#status").val() == "private"){
+            let shareArray = $("ul#upload_share").tagit("assignedTags");
+            for (i = 0; i < shareArray.length; i++) {
+                let cur = $("input[name=share_upload]").val()
+                $("input[name=share_upload]").val(cur + " " + shareArray[i])
+            }
+        } else {
+            $("ul#upload_share").tagit("removeAll");
         }
-
 
         $("#uploadForm").submit()
     }
@@ -195,7 +205,9 @@ function readURL(input) {
     if (realFileBtn.value) { //if a file is chosen
         let filename = realFileBtn.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1]
         customTxt.innerHTML = filename;
-        $("#hiddenFile").val(filename)
+        let date = Date.now()
+        $("#hiddenFile").val(date+"_"+filename)
+        $("#hiddenFile2").val(date+"_"+filename)
     } else
         customTxt.innerHTML = "No meme chosen yet";
 
