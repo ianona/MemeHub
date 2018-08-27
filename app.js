@@ -96,7 +96,7 @@ function clearDB(){
 }
 
 /*                  ROUTES               */
-app.listen(3000, ()=>{
+app.listen(process.env.PORT || 3000, ()=>{
     //clearDB()
     console.log("Now listening on port 3000...")
 })
