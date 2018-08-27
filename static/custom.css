@@ -497,3 +497,13 @@ input#real-file{
 div.meme_stats{
     height:30px;
 }
+
+ul#view_tags{
+    border-color:white;
+}
+
+div#passErr, div#userErr, div#emailErr{
+    display:none;
+    background-color:rgb(218, 64, 64);
+    color:white
+}

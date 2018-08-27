@@ -3,11 +3,12 @@ const User = require("../models/user.js").User
 const Meme = require("../models/meme.js").Meme
 
 // FIND ALL PUBLIC MEMES
-module.exports.getAllPublicMemes = function(){
+module.exports.getAllPublicMemes = function(count){
     return new Promise(function(resolve,reject){
         Meme.find({
             privacy:"public"
         }).then((memes)=>{
+            //memes = memes.slice(count-5,count)
             resolve(memes)
         }, (err)=>{
             reject(err)
@@ -64,6 +65,35 @@ module.exports.getAllMemesByUserWithShare = function(user){
     })
 }
 
+// SEARCH FOR MEME BASED ON SHARED USERS WITH COUNT
+module.exports.getAllMemesByUserWithShareWithCount = function(user, count){
+    //var n = req.session.meme_count
+    return new Promise(function(resolve,reject){
+        Meme.find({
+            $or:[
+                {
+                    privacy:"public"
+                },
+                {
+                    privacy:"private",
+                    user:user.username
+                },
+                {
+                    privacy:"private",
+                    shared_users:{
+                        $in:user.username
+                    }
+                }
+            ]
+        }).then((memes)=>{
+            memes = memes.slice(count-5,count)
+            resolve(memes)
+        }, (err)=>{
+            reject(err)
+        })
+    })
+}
+
 // FIND MEME BASED ON ID AND RETURN MEME
 module.exports.findMeme = function(id){
     return new Promise(function(resolve,reject){
@@ -106,6 +136,12 @@ module.exports.search = function(tags, username){
                         },
                         privacy:"private",
                         user:username
+                    },
+                    {
+                        privacy:"private",
+                        shared_users:{
+                            $in:username
+                        }
                     }
                 ]
             }).then((memes)=>{
@@ -120,6 +156,12 @@ module.exports.search = function(tags, username){
                     {
                         privacy:"private",
                         user:username
+                    },
+                    {
+                        privacy:"private",
+                        shared_users:{
+                            $in:username
+                        }
                     }
                 ]
             }).then((memes)=>{
@@ -176,54 +218,6 @@ module.exports.editMeme = function(id, newTitle, newTags){
 }
 
 /*
-// FIND ALL PUBLIC MEMES BY COUNT
-function getAllPublicMemesByCount(req, res) {
-    var n = req.session.meme_count
-    Meme.find({
-        privacy:"public"
-    }).then((memes)=>{
-        let user = req.session.user
-
-        memes = memes.slice(0,n)
-        if (user){
-            res.redirect("/login_success")
-        } else {
-            res.render("index.hbs",{
-                memes
-            })
-        }
-    }, ()=>{
-        res.render("error.hbs")
-    })
-}
-
-// FIND ALL PUBLIC MEMES AND PRIVATE MEMES THAT BELONG TO THE USER WITH COUNT
-function getAllMemesByUserByCount(req,res) {
-    var n = req.session.meme_count
-    let user = req.session.user
-    Meme.find({
-        $or:[
-            {
-                privacy:"public"
-            },
-            {
-                privacy:"private",
-                user:user.username
-            }
-        ]
-    }).then((memes)=>{
-        memes = memes.slice(0,n)
-        let user = req.session.user
-        if (user){
-            res.redirect("/login_success")
-        } else {
-            res.render("index.hbs",{
-                memes
-            })
-        }
-    })
-}
-
 // UPDATE MEME BASED ON ID TO NEW UPVOTE/DOWNVOTE NUMBER
 function updateVotes(req,res){
     Meme.update(

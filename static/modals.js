@@ -34,6 +34,8 @@ $(document).ready(function(){
 
     let container = $(".chosen").data("chosen").container
     container.bind("keypress", updateSearch);
+
+    $("input#hidden_avatar").val("../avatar/man-2.png")
 })
 
 function changeAvatarChoice() {

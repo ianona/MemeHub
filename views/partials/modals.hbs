@@ -35,14 +35,24 @@
                 <div class="required field">
                     <label>Email</label>
                     <input type="text" name="signup_email" placeholder="john_smith@memehub.com">
+                    <div class="ui pointing label" id="emailErr">
+                        invalid email
+                    </div>
                 </div>
                 <div class="required field">
                     <label>Username</label>
                     <input type="text" name="signup_username" placeholder="johnsmith96">
+                    <div class="ui pointing label" id="userErr">
+                        min. 4 characters
+                    </div>
                 </div>
                 <div class="required field">
                     <label>Password</label>
                     <input type="password" name="signup_password" placeholder="******">
+                    <div class="ui pointing label" id="passErr">
+                        min. 6 characters <br/>
+                        at least one uppercase, onelowercase, and one number
+                    </div>
                 </div>
             </div>         
 
@@ -81,7 +91,7 @@
                 <div class="field">
                     <label>Choose avatar</label>
                     <div class="container">
-                        <img class="ui avatar" src="../avatar/man-2.png">
+                        <img class="selected ui avatar" src="../avatar/man-2.png">
                         <img class="ui avatar" src="../avatar/boy-1.png">
                         <img class="ui avatar" src="../avatar/boy.png">
                         <img class="ui avatar" src="../avatar/girl-1.png">
@@ -132,7 +142,7 @@
 <div class="ui tiny modal registerSuccess">
     <i class="close icon"></i>
     <div class="header">
-        {{signup_message}}{{error}}
+        {{signup_message}}
         <i class="check circle"></i></div>
     <div class="content">
         <center>
@@ -148,7 +158,7 @@
 <!-------UPLOAD SUCCESS MODAL------>
 <div class="ui tiny modal uploadSuccess_modal">
     <i class="close icon"></i>
-    <div class="header">{{upload_message}}{{error}}</div>
+    <div class="header">{{upload_message}}</div>
     <div class="scrolling content">
         <center>
         {{#if error}}

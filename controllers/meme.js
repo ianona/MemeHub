@@ -39,7 +39,7 @@ router.post("/finishUpload", urlencoder, (req, res) => {
     })
 
     MemeService.addNewMeme(m).then((meme) => {
-        MemeService.getAllMemesByUser(req.session.user).then((memes) => {
+        MemeService.getAllMemesByUserWithShare(req.session.user).then((memes) => {
             let tags = req.body.tags_upload.split(' ').filter(Boolean)
             for (i = 0; i < tags.length; i++) {
                 TagService.addTag(tags[i], m).then((tag) => {
@@ -52,6 +52,7 @@ router.post("/finishUpload", urlencoder, (req, res) => {
             UserService.addMemeToUser(req.session.user.username, m).then((user) => {
                 console.log("[User] Successfully added meme to user")
                 memes.sort(curSort)
+                memes = memes.slice(0,req.session.meme_count)
                 res.render("index.hbs", {
                     user: user,
                     memes,
@@ -62,12 +63,13 @@ router.post("/finishUpload", urlencoder, (req, res) => {
             })
         })
     }, (err) => {
-        MemeService.getAllMemesByUser(req.session.user).then((memes) => {
+        MemeService.getAllMemesByUserWithShare(req.session.user).then((memes) => {
             memes.sort(curSort)
+            memes = memes.slice(0,req.session.meme_count)
             res.render("index.hbs", {
                 user: req.session.user,
                 memes,
-                upload_message: "Sorry, something went wrong: ",
+                upload_message: "Sorry, something went wrong :(",
                 error: err
             })
         })

@@ -49,9 +49,14 @@ router.get("/",(req,res)=>{
     
     if (user)
         res.redirect(307,"../login_success")
-    
-    MemeService.getAllPublicMemes().then((memes)=>{
+
+    if (req.session.meme_count == null)
+        req.session.meme_count = 5
+    let count = req.session.meme_count
+
+    MemeService.getAllPublicMemes(count).then((memes)=>{
         memes.sort(curSort)
+        memes = memes.slice(0,count)
         res.render("index.hbs", {
             memes
         })
@@ -62,9 +67,13 @@ router.get("/",(req,res)=>{
 // GET ALL PUBLIC MEMES OR PRIVATE MEMES THE USER OWNS
 router.get("/login_success", (req,res)=>{
     console.log("GET /login_success")
+
+    let count = req.session.meme_count
     UserService.findUserByID(req.session.user._id).then((user)=>{
         MemeService.getAllMemesByUserWithShare(user).then((memes)=>{
             memes.sort(curSort)
+            memes = memes.slice(0,count)
+            
             res.render("index.hbs",{
                 user,
                 memes
@@ -91,6 +100,26 @@ router.post('/sort', urlencoder, (req,res)=>{
             break
     }
     res.redirect('/')
+})
+
+router.get("/more",(req,res)=>{
+    req.session.meme_count += 5
+    let count = req.session.meme_count
+    if (req.session.user){
+        UserService.findUserByID(req.session.user._id).then((user)=>{
+            MemeService.getAllMemesByUserWithShare(user,count).then((memes)=>{
+                memes.sort(curSort)
+                memes = memes.slice(count-5,count)
+                res.send({memes})
+            })
+        })
+    } else {
+        MemeService.getAllPublicMemes(count).then((memes)=>{
+            memes.sort(curSort)
+            memes = memes.slice(count-5,count)
+            res.send({memes})
+        })
+    }
 })
 
 // LOGOUT & END CURRENT SESSION

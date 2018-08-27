@@ -16,8 +16,39 @@ $(document).ready(function () {
     $("ul#view_tags").tagit({
         readOnly:true
     });
+
+    $(".more_memes").click(getMoreMemes)
     
 })
+
+function getMoreMemes(){
+    $(this).addClass("loading")
+    $.ajax({
+        url: '../more',
+        method: 'GET',
+        success: function (res) {
+            // $('.container.right').empty()
+            $(".more_memes").css("display","none")
+            for (i = 0; i < res.memes.length; i++) {
+                insertMeme(res.memes[i])
+            }
+
+            if (res.memes.length == 5) {
+                let more = document.createElement("div")
+                more.className = "more"
+                let btnMore = document.createElement("button")
+                btnMore.className = "ui icon button big orange more_memes"
+                let downIcon = document.createElement("i")
+                downIcon.className = "angle double down icon"
+                $(btnMore).click(getMoreMemes)
+                $(btnMore).append(downIcon)
+                $(more).append(btnMore)
+                $(".wrapper .container.right").append(more)
+            } 
+
+        }
+    })
+}
 
 function updateSearch() {
     $.ajax({
@@ -240,9 +271,6 @@ function viewMeme() {
                 $(saveIcon).attr('data-id', data.meme._id)
                 $(saveIcon).click(editMeme)
 
-                $("div.view_modal div.header").empty()
-                $("div.view_modal div.header").text("View meme")
-
                 if (data.meme.user === $("span.username").attr("data-name") || data.meme.user === $("div.username").attr("data-name")) {
                     $("#view_meme_info").append(delIcon)
                     $("#view_meme_info").append(editIcon)
@@ -276,7 +304,7 @@ function viewUser() {
             $(".view_profile div.tiny.images").empty()
             let counter = 0
             for (i = 0; i < data.user.memes.length; i++) {
-                if (counter > 3)
+                if (counter >= 3)
                     break
                 var img = document.createElement("img")
                 $(img).attr("src", "../meme/photo/" + data.user.memes[i]._id)
@@ -312,6 +340,7 @@ function prepareEdit() {
     $("ul#view_tags").tagit({
         readOnly:false
     });
+    $('ul#view_tags').css("border-color","#d6d4d3")
     let tags = $('ul#view_tags').tagit("assignedTags");
     $('ul#view_tags').tagit("removeAll");
     for (i = 0; i < tags.length; i++) {
@@ -327,6 +356,7 @@ function editMeme() {
     $("ul#view_tags").tagit({
         readOnly:true
     });
+    $('ul#view_tags').css("border-color","white")
     let tags = $('ul#view_tags').tagit("assignedTags");
     $('ul#view_tags').tagit("removeAll");
     for (i = 0; i < tags.length; i++) {
