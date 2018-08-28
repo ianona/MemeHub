@@ -92,18 +92,21 @@ module.exports.deleteTagMeme = function (meme) {
     })
 }
 
-/*
 // REMOVE TAG BASED ON NAME
-function removeTags(req, res){
-    var name = req.body.name
-
-    Tag.remove({
-        name : name
-    }).then(()=>{
-        res.redirect("/")
+module.exports.removeTags = function(name){
+    return new Promise(function (resolve, reject) {
+        Tag.remove({
+            name : name
+        }).then((result)=>{
+            resolve(result)
+        },(err)=>{
+            reject(err)
+        })
     })
-
 }
+
+/*
+
 
 // SEARCH FOR POSTS BASED ON TAG NAME
 function searchByTag(req, res){
